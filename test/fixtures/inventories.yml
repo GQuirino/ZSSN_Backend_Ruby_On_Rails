@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  survivor_id: 1
+  resource_type: MyString
+  resource_amount: 1
+
+two:
+  survivor_id: 1
+  resource_type: MyString
+  resource_amount: 1
