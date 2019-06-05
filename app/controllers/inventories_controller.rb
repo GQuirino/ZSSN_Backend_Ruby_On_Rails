@@ -17,11 +17,12 @@ class InventoriesController < ApplicationController
   def create
     @inventory = Inventory.new(inventory_params)
 
-    if @inventory.save
-      render json: @inventory, status: :created, location: @inventory
-    else
-      render json: @inventory.errors, status: :unprocessable_entity
-    end
+    render json: inventory_params
+    # if @inventory.save
+    #   render json: @inventory, status: :created, location: @inventory
+    # else
+    #   render json: @inventory.errors, status: :unprocessable_entity
+    # end
   end
 
   # PATCH/PUT /inventories/1
@@ -39,13 +40,18 @@ class InventoriesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_inventory
-      @inventory = Inventory.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def inventory_params
-      params.require(:inventory).permit(:survivor_id, :resource_type, :resource_amount)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_inventory
+    @inventory = Inventory.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def inventory_params
+    params.require(:inventory).permit(
+      :survivor_id,
+      :resource_type,
+      :resource_amount
+    )
+  end
 end
