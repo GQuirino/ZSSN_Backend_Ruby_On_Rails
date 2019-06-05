@@ -14,7 +14,7 @@ class SurvivorsController < ApplicationController
   # POST /survivors
   def create
     @survivor = Survivor.new(survivor_params)
-
+    @survivor.points = InventoryService.generate_points(@survivor.inventories)
     if @survivor.save
       resp = @survivor.to_json(methods: [:inventories])
       render json: resp, status: :created
