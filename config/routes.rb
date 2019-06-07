@@ -1,15 +1,15 @@
 Rails.application.routes.draw do
   root 'survivors#index'
 
-  get 'reports/infected', to: 'reports#infected'
-  get 'reports/non-infected', to: 'reports#nonInfected'
+  # get 'reports/infected', to: 'reports#infected'
+  # get 'reports/non-infected', to: 'reports#nonInfected'
 
-  resource :survivors, only: [:index, :create, :update]
+  resources :survivors, only: %i[index create update show]
   # get 'survivors/', to: 'survivors#index'
   # post 'survivors/', to: 'survivors#create'
-  # put 'survivors/:idSurvivor', to: 'survivors#update'
+  # put 'survivors/:id', to: 'survivors#update'
 
-  put 'infection/:idSurvivor', to: 'infection#new'
+  # put 'infection/:idSurvivor', to: 'infection#new'
 
-  post 'trade', to: 'trade#new'
+ # post 'trade', to: 'trade#new'
 end

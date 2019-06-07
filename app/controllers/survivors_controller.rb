@@ -3,7 +3,8 @@ class SurvivorsController < ApplicationController
 
   # GET /survivors
   def index
-    render json: Survivor.all_survivors_data
+    @survivors = Survivor.all
+    render json: @survivor.to_json(methods: [:inventories])
   end
 
   # GET /survivors/1
@@ -25,8 +26,9 @@ class SurvivorsController < ApplicationController
 
   # PATCH/PUT /survivors/1
   def update
-    if @survivor.update(survivor_params)
-      render json: @survivor
+    if @survivor.update(survivor_edit_params)
+      resp = @survivor
+      render json: resp
     else
       render json: @survivor.errors, status: :unprocessable_entity
     end
@@ -44,11 +46,16 @@ class SurvivorsController < ApplicationController
     @survivor = Survivor.find(params[:id])
   end
 
-  # Only allow a trusted parameter "white list" through.
   def survivor_params
     params.require(:survivor).permit(
       :age, :flag_as_infected, :gender, :latitude, :longitude, :name,
-      inventories_attributes: [:resource_type, :resource_amount]
+      inventories_attributes: %i[resource_type resource_amount]
+    )
+  end
+
+  def survivor_edit_params
+    params.require(:survivor).permit(
+      :flag_as_infected, :latitude, :longitude
     )
   end
 end

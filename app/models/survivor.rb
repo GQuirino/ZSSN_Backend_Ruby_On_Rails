@@ -2,10 +2,8 @@ class Survivor < ApplicationRecord
   has_many :inventories
   accepts_nested_attributes_for :inventories
 
-  attr_accessor :points
+  scope :infected, -> { where('flag_as_infected > ?', true) }
+  scope :non_infected, -> { where('flag_as_infected < ?', false) }
 
-  def self.all_survivors_data
-    @survivors = Survivor.all
-    @survivors.to_json(methods: [:inventories])
-  end
+  validates :age, :name, :flag_as_infected, :gender, :latitude, :longitude, presence: true
 end
