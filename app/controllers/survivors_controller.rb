@@ -1,5 +1,15 @@
 class SurvivorsController < ApplicationController
-  before_action :set_survivor, only: [:show, :update, :destroy]
+  before_action :set_survivor, only: %i[show update destroy]
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found
+
+  include Errors
+
+  # Error NOT_FOUND
+  def not_found
+    source = { survivor: params[:id] }
+    error = new_error(:NOT_FOUND, 'Survivor not found', source)
+    render json: error, status: error[:status]
+  end
 
   # GET /survivors
   def index
@@ -9,7 +19,7 @@ class SurvivorsController < ApplicationController
 
   # GET /survivors/1
   def show
-    render json: @survivor
+    render json: @survivor.to_json(methods: [:inventories])
   end
 
   # POST /survivors
