@@ -11,6 +11,21 @@ class ReportsController < ApplicationController
     }, status: 200
   end
 
-  def nonInfected
+  def non_infected
+    @survivors = Survivor.non_infected
+    total = Survivor.count
+    percent = ReportService.generate_percentage(@survivors.length, total)
+    resource_by_survivor = {
+      water: ReportService.avg_resource_by_survivor(@survivors, 'water'),
+      food: ReportService.avg_resource_by_survivor(@survivors, 'food'),
+      medication: ReportService.avg_resource_by_survivor(@survivors, 'medication'),
+      amunition: ReportService.avg_resource_by_survivor(@survivors, 'ammunition')
+    }
+
+    render json: {
+      non_infected: @survivors.length,
+      percent: percent,
+      avg_resource_by_survivor: resource_by_survivor
+    }, status: 200
   end
 end
