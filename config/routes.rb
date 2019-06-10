@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
   root 'survivors#index'
 
-  # get 'reports/infected', to: 'reports#infected'
-  # get 'reports/non-infected', to: 'reports#nonInfected'
+  get 'reports/infected', to: 'reports#infected'
+  get 'reports/non-infected', to: 'reports#nonInfected'
 
   resources :survivors, only: %i[index create update show]
   # get 'survivors/', to: 'survivors#index'

@@ -25,7 +25,7 @@ module Errors
   def new_error(code, details, source = {})
     error = ERRORS[code || :INTERNAL]
     error[:details] = details
-    error[:source] = source.deep_stringify_keys
+    error[:source] = source
     error
   end
 end
