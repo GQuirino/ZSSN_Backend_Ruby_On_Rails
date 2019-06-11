@@ -16,10 +16,10 @@ class ReportsController < ApplicationController
     total = Survivor.count
     percent = ReportService.generate_percentage(@survivors.length, total)
     resource_by_survivor = {
-      water: ReportService.avg_resource_by_survivor(@survivors, 'water'),
-      food: ReportService.avg_resource_by_survivor(@survivors, 'food'),
-      medication: ReportService.avg_resource_by_survivor(@survivors, 'medication'),
-      amunition: ReportService.avg_resource_by_survivor(@survivors, 'ammunition')
+      water: ReportService.avg_resource(@survivors, 'water'),
+      food: ReportService.avg_resource(@survivors, 'food'),
+      medication: ReportService.avg_resource(@survivors, 'medication'),
+      amunition: ReportService.avg_resource(@survivors, 'ammunition')
     }
 
     render json: {

@@ -8,7 +8,7 @@ module ReportService
       ((100 * num).to_f / total).round(2)
     end
 
-    def avg_resource_by_survivor(list_survivor, item)
+    def avg_resource(list_survivor, item)
       sum = 0
       list_survivor.each do |survivor|
         survivor.inventories.each do |resource|

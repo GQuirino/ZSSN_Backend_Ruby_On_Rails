@@ -7,8 +7,8 @@ RSpec.describe InventoryService do
   let!(:medication) { create(:inventory, :medication, resource_amount: 3, survivor: survivor) }
   let!(:ammunition) { create(:inventory, :ammunition, resource_amount: 4, survivor: survivor) }
 
-  describe '.generate_points' do
-    is_expected.to eq 30
+  it 'generate_points' do
+    expect(InventoryService.generate_points(survivor.inventories)).to eq 30
   end
 end
 
