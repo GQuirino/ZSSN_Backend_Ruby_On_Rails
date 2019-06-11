@@ -5,7 +5,7 @@ RSpec.describe Survivor, type: :model do
     it { is_expected.to have_many(:inventories) }
   end
 
-  describe 'Validade presence of' do
+  describe 'Validate presence of' do
     it { is_expected.to validate_presence_of(:age) }
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_presence_of(:flag_as_infected) }
