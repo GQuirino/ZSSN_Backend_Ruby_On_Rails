@@ -14,7 +14,7 @@ class SurvivorsController < ApplicationController
   # GET /survivors
   def index
     @survivors = Survivor.all
-    render json: @survivor.to_json(methods: [:inventories])
+    render json: @survivors.to_json(methods: [:inventories])
   end
 
   # GET /survivors/1
@@ -42,11 +42,6 @@ class SurvivorsController < ApplicationController
     else
       render json: @survivor.errors, status: :unprocessable_entity
     end
-  end
-
-  # DELETE /survivors/1
-  def destroy
-    @survivor.destroy
   end
 
   private
