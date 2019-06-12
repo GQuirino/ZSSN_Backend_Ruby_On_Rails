@@ -8,7 +8,6 @@ class Survivor < ApplicationRecord
   validates(
     :age,
     :name,
-    :flag_as_infected,
     :gender, :latitude,
     :longitude,
     presence: true

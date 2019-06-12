@@ -26,6 +26,8 @@ class SurvivorsController < ApplicationController
   def create
     @survivor = Survivor.new(survivor_params)
     @survivor.points = InventoryService.generate_points(@survivor.inventories)
+    @survivor.flag_as_infected = 0
+
     if @survivor.save
       resp = @survivor.to_json(methods: [:inventories])
       render json: resp, status: :created
@@ -53,7 +55,7 @@ class SurvivorsController < ApplicationController
 
   def survivor_params
     params.require(:survivor).permit(
-      :age, :flag_as_infected, :gender, :latitude, :longitude, :name,
+      :age, :gender, :latitude, :longitude, :name,
       inventories_attributes: %i[resource_type resource_amount]
     )
   end

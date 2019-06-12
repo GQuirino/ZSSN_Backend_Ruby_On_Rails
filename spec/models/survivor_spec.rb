@@ -8,7 +8,6 @@ RSpec.describe Survivor, type: :model do
   describe 'Validate presence of' do
     it { is_expected.to validate_presence_of(:age) }
     it { is_expected.to validate_presence_of(:name) }
-    it { is_expected.to validate_presence_of(:flag_as_infected) }
     it { is_expected.to validate_presence_of(:gender) }
     it { is_expected.to validate_presence_of(:latitude) }
     it { is_expected.to validate_presence_of(:longitude) }
