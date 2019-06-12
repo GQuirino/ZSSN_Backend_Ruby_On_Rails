@@ -65,7 +65,7 @@ class SurvivorsController < ApplicationController
 
   def survivor_edit_params
     params.require(:survivor).permit(
-      :flag_as_infected, :latitude, :longitude
+      :latitude, :longitude
     )
   end
 end

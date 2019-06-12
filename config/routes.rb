@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   # post 'survivors/', to: 'survivors#create'
   # put 'survivors/:id', to: 'survivors#update'
 
-  # put 'infection/:idSurvivor', to: 'infection#new'
+  put 'infection/:id', to: 'infections#new'
 
  # post 'trade', to: 'trade#new'
 end
