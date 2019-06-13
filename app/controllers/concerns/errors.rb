@@ -1,4 +1,26 @@
 module Errors
+  extend ActiveSupport::Concern
+  included do
+    rescue_from ActiveRecord::RecordNotFound do |e|
+      source = { survivor: e.id }
+      new_error(:NOT_FOUND, 'Survivor not found', source)
+    end
+
+    rescue_from SurvivorInfectedError do |e|
+      source = { survivor: e.id }
+      new_error(:SURVIVOR_INFECTED, 'Survivor already infected', source)
+    end
+  end
+
+  class SurvivorInfectedError < StandardError
+    attr_accessor :id
+    def initialize(id)
+      @id = id
+    end
+  end
+
+  private
+
   ERRORS = {
     NOT_FOUND: {
       status: 404,
@@ -26,6 +48,6 @@ module Errors
     error = ERRORS[code || :INTERNAL]
     error[:details] = details
     error[:source] = source
-    error
+    render json: error, status: error[:status]
   end
 end
