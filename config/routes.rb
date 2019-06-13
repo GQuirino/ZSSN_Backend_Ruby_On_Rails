@@ -11,5 +11,5 @@ Rails.application.routes.draw do
 
   put 'infection/:id', to: 'infections#new'
 
-  post 'trade/:idSurvivorFrom/to/:idSurvivorTo', to: 'trades#new'
+  put 'trade/:idSurvivorFrom/to/:idSurvivorTo', to: 'trades#update'
 end

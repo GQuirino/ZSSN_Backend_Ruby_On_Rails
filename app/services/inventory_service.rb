@@ -2,7 +2,7 @@ module InventoryService
   class << self
     # resources can receive:
     # array of iventories = [ <Inventory>, <Inventory>, ... ]
-    # one hash { water: 1, food: 2 }
+    # hash { water: 1, food: 2 }
     def generate_points(resources)
       points = { water: 4, food: 3, medication: 2, ammunition: 1 }
       total_points = 0

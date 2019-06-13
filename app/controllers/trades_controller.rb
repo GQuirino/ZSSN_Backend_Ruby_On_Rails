@@ -1,7 +1,8 @@
 class TradesController < ApplicationController
   include Errors
 
-  def new
+  def update
+    # check transactions
     @survivor_from = Survivor.find(params[:idSurvivorFrom])
     @survivor_to = Survivor.find(params[:idSurvivorTo])
     raise SurvivorInfectedError, params[:idSurvivorFrom] if @survivor_from.infected?
