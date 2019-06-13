@@ -8,7 +8,12 @@ module Errors
 
     rescue_from SurvivorInfectedError do |e|
       source = { survivor: e.id }
-      new_error(:SURVIVOR_INFECTED, 'Survivor already infected', source)
+      new_error(:SURVIVOR_INFECTED, 'Survivor is infected', source)
+    end
+
+    rescue_from TradeInvalid do |e|
+      source = { reason: e.reason }
+      new_error(:INVALID_TRADE, 'Invalid Trade', source)
     end
   end
 
@@ -19,27 +24,34 @@ module Errors
     end
   end
 
+  class TradeInvalid < StandardError
+    attr_accessor :reason
+    def initialize(reason)
+      @reason = reason
+    end
+  end
+
   private
 
   ERRORS = {
     NOT_FOUND: {
-      status: 404,
+      status_code: 404,
       title: 'NOT FOUND'
     },
     INTERNAL: {
-      status: 500,
+      status_code: 500,
       title: 'INTERNAL ERROR'
     },
     MISSING_DATA: {
-      statusCode: 422,
+      status_code: 422,
       title: 'MISSING DATA'
     },
     INVALID_TRADE: {
-      statusCode: 403,
+      status_code: 403,
       title: 'INVALID TRADE'
     },
     SURVIVOR_INFECTED: {
-      statusCode: 400,
+      status_code: 400,
       title: 'SURVIVOR INFECTED'
     }
   }.freeze
@@ -48,6 +60,6 @@ module Errors
     error = ERRORS[code || :INTERNAL]
     error[:details] = details
     error[:source] = source
-    render json: error, status: error[:status]
+    render json: error, status: error[:status_code]
   end
 end
