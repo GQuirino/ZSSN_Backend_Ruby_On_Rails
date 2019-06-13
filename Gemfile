@@ -37,6 +37,8 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.8', '>= 3.8.2'
   gem 'shoulda-matchers', '~> 3.0.0'
   gem 'timecop', '~> 0.9.1'
+  gem 'pry'
+  gem 'pry-remote'
 end
 
 group :development do

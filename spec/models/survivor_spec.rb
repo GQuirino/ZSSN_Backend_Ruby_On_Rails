@@ -1,17 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe Survivor, type: :model do
-  describe 'Association' do
-    it { is_expected.to have_many(:inventories) }
-  end
+  it { is_expected.to have_many(:inventories) }
+  it { is_expected.to validate_presence_of(:age) }
+  it { is_expected.to validate_presence_of(:name) }
+  it { is_expected.to validate_presence_of(:gender) }
+  it { is_expected.to validate_presence_of(:latitude) }
+  it { is_expected.to validate_presence_of(:longitude) }
 
-  describe 'Validate presence of' do
-    it { is_expected.to validate_presence_of(:age) }
-    it { is_expected.to validate_presence_of(:name) }
-    it { is_expected.to validate_presence_of(:gender) }
-    it { is_expected.to validate_presence_of(:latitude) }
-    it { is_expected.to validate_presence_of(:longitude) }
-  end
+  #infected? increment_infection
 end
 
 # before do

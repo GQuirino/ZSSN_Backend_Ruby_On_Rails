@@ -1,5 +1,5 @@
 class Inventory < ApplicationRecord
-  belongs_to :survivor, foreign_key: :survivor_id, optional: true
+  belongs_to :survivor
 
   validates :resource_type, :resource_amount, presence: true
 end

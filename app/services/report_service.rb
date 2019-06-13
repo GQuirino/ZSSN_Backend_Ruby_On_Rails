@@ -1,23 +1,38 @@
 module ReportService
   class << self
-    def points_lost(list_infected)
-      list_infected.reduce(0) { |sum, survivor| sum + survivor.points }
-    end
+    include SurvivorsQueries
 
     def generate_percentage(num, total)
       ((100 * num).to_f / total).round(2)
     end
 
-    def avg_resource(list_survivor, item)
-      sum = 0
-      list_survivor.each do |survivor|
-        survivor.inventories.each do |resource|
-          if resource.resource_type == item
-            sum += resource.resource_amount
-          end
-        end
-      end
-      (sum.to_f / list_survivor.length).round(2)
+    def generate_report_infected
+      @infected = Survivor.infected
+      total = count_all_survivors
+      points_lost = sum_lost_points
+      percent = ReportService.generate_percentage(@infected.length, total)
+      {
+        infected: @infected.length,
+        percent: percent,
+        points_lost: points_lost
+      }
+    end
+
+    def generate_report_non_infected
+      @survivors = Survivor.non_infected
+      total = count_all_survivors
+      percent = ReportService.generate_percentage(@survivors.length, total)
+      resource_by_survivor = {
+        water: avg_resource_by_survivor('water'),
+        food: avg_resource_by_survivor('food'),
+        medication: avg_resource_by_survivor('medication'),
+        amunition: avg_resource_by_survivor('ammunition')
+      }
+      {
+        non_infected: @survivors.length,
+        percent: percent,
+        avg_resource_by_survivor: resource_by_survivor
+      }
     end
   end
 end

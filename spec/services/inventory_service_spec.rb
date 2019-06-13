@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe InventoryService do
+  # build
+  # build_stubbed
   let(:survivor) { create(:survivor) }
   let!(:water) do
     create(:inventory, :water, resource_amount: 1, survivor: survivor)

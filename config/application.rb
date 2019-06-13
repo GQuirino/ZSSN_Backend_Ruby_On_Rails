@@ -19,7 +19,7 @@ Bundler.require(*Rails.groups)
 
 module ZSSNBackendRubyOnRails
   class Application < Rails::Application
-    #load /libs
+    # load /libs
     config.autoload_paths += Dir[
       "#{config.root}/lib/**/"
     ]
