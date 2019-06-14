@@ -9,7 +9,7 @@ module InventoryService
 
       resources.each do |key, v|
         type = key.is_a?(Inventory) ? key.resource_type.to_sym : key.to_sym
-        value = key.is_a?(Inventory) ? key.resource_amount : v
+        value = key.is_a?(Inventory) ? key.resource_amount : v.to_i
         total_points += points.key?(type) ? value * points[type] : 0
       end
       total_points

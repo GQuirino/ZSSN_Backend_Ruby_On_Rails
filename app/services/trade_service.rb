@@ -13,8 +13,8 @@ module TradeService
     private
 
     def exchange_items(to_remove, to_add, survivor)
-      remove_lambda = ->(resource, val) { resource.resource_amount -= val }
-      add_lambda = ->(resource, val) { resource.resource_amount += val }
+      remove_lambda = ->(resource, val) { resource.resource_amount -= val.to_i }
+      add_lambda = ->(resource, val) { resource.resource_amount += val.to_i }
 
       update_inventory(to_remove, survivor, remove_lambda)
       update_inventory(to_add, survivor, add_lambda)
@@ -39,7 +39,7 @@ module TradeService
         resource = survivor.inventories.find do |r|
           r[:resource_type] == key
         end
-        raise Errors::TradeInvalid, reason if resource['resource_amount'] < val
+        raise Errors::TradeInvalid, reason if resource['resource_amount'] < val.to_i
       end
     end
 
