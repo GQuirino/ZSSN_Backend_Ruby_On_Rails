@@ -3,18 +3,19 @@ class TradesController < ApplicationController
 
   def update
     # check transactions
-    @survivor_from = Survivor.find(params[:idSurvivorFrom])
-    @survivor_to = Survivor.find(params[:idSurvivorTo])
-    raise SurvivorInfectedError, params[:idSurvivorFrom] if @survivor_from.infected?
-    raise SurvivorInfectedError, params[:idSurvivorTo] if @survivor_to.infected?
-
-    resp = TradeService.trade_items(
-      @survivor_from,
-      @survivor_to,
-      params[:inventory_offer],
-      params[:inventory_request]
-    )
-
+    resp = {}
+    Inventory.transaction do
+      resp[:from] = TradeService.trade_items(
+        params[:idSurvivorFrom],
+        params[:inventory_offer],
+        params[:inventory_request]
+      )
+      resp[:to] = TradeService.trade_items(
+        params[:idSurvivorTo],
+        params[:inventory_request],
+        params[:inventory_offer]
+      )
+    end
     render json: resp, status: :ok
   end
 

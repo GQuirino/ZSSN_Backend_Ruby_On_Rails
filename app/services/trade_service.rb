@@ -1,36 +1,36 @@
 module TradeService
   class << self
-    def trade_items(
-      survivor_from, survivor_to,
-      resources_offer, resources_request
-    )
-      enough_resources?(survivor_from, resources_offer)
-      enough_resources?(survivor_to, resources_request)
-      respect_price_table?(resources_offer, resources_request)
-      exchange_items(resources_offer, resources_request, survivor_from)
-      exchange_items(resources_request, resources_offer, survivor_to)
-      from = survivor_from.to_json(methods: [:inventories])
-      to = survivor_to.to_json(methods: [:inventories])
-      { from: JSON.parse(from), to: JSON.parse(to) }
+    def trade_items(id_survivor, items_to_remove, items_to_add)
+      @survivor = Survivor.find(id_survivor)
+      raise Errors::SurvivorInfectedError, id_survivor if @survivor.infected?
+
+      enough_resources?(@survivor, items_to_remove)
+      respect_price_table?(items_to_remove, items_to_add)
+      exchange_items(items_to_remove, items_to_add, @survivor)
+      @survivor.as_json(methods: [:inventories])
     end
 
     private
 
     def exchange_items(to_remove, to_add, survivor)
-      inventories = survivor.inventories
-      to_remove.each do |key, val|
-        idx = inventories.index { |i| i[:resource_type] == key }
-        resource = inventories[idx]
-        resource.resource_amount -= val
-      end
+      remove_lambda = ->(resource, val) { resource.resource_amount -= val }
+      add_lambda = ->(resource, val) { resource.resource_amount += val }
 
-      to_add.each do |key, val|
+      update_inventory(to_remove, survivor, remove_lambda)
+      update_inventory(to_add, survivor, add_lambda)
+    end
+
+    def update_inventory(items, survivor, func)
+      inventories = survivor.inventories
+      items.each do |key, val|
         idx = inventories.index { |i| i[:resource_type] == key }
         resource = inventories[idx]
-        resource.resource_amount += val
+        func.call(resource, val)
+        Inventory.update(
+          resource.id,
+          resource_amount: resource.resource_amount
+        )
       end
-      inventories
-      # Inventory.update_all(inventories)
     end
 
     def enough_resources?(survivor, items_to_trade)
