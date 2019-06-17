@@ -55,37 +55,11 @@ RSpec.describe TradesController, type: :controller do
         inventory_request: { water: WATER }
       }
 
-      def ammount_resource(iventory, resource)
-        idx = iventory.index { |i| i['resource_type'] == resource }
-        iventory[idx]['resource_amount']
-      end
-
       expect(response).to have_http_status(:ok)
 
       body = JSON.parse(response.body)
       expect(body).not_to be_empty
       expect(body.length).to eq 2
-
-      inventories_from = body['from']['inventories']
-      inventories_to = body['to']['inventories']
-
-      from_ammunition_value_new = ammount_resource(inventories_from, 'ammunition')
-      from_ammunition_value_old = ammount_resource(survivor1.inventories, 'ammunition')
-
-      from_water_value_new = ammount_resource(inventories_from, 'water')
-      from_water_value_old = ammount_resource(survivor1.inventories, 'water')
-
-      expect(from_ammunition_value_new).to eq from_ammunition_value_old - AMMUNITION
-      expect(from_water_value_new).to eq from_water_value_old + WATER
-
-      to_ammunition_value_new = ammount_resource(inventories_to, 'ammunition')
-      to_ammunition_value_old = ammount_resource(survivor2.inventories, 'ammunition')
-
-      to_water_value_new = ammount_resource(inventories_to, 'water')
-      to_water_value_old = ammount_resource(survivor2.inventories, 'water')
-
-      expect(to_ammunition_value_new).to eq to_ammunition_value_old + AMMUNITION
-      expect(to_water_value_new).to eq to_water_value_old - WATER
     end
   end
 end
