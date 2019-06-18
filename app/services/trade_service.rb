@@ -39,7 +39,7 @@ module TradeService
         resource = survivor.inventories.find do |r|
           r[:resource_type] == key
         end
-        raise Errors::TradeInvalid, reason if resource['resource_amount'] < val.to_i
+        raise TradesController::TradeInvalid, reason if resource['resource_amount'] < val.to_i
       end
     end
 
@@ -47,7 +47,7 @@ module TradeService
       reason = 'Trade not respect table of prices'
       points_offer = InventoryService.generate_points(resources_offer)
       points_request = InventoryService.generate_points(resources_request)
-      raise Errors::TradeInvalid, reason unless points_offer == points_request
+      raise TradesController::TradeInvalid, reason unless points_offer == points_request
     end
   end
 end

@@ -10,11 +10,6 @@ module Errors
       source = { survivor: e.id }
       new_error(:SURVIVOR_INFECTED, 'Survivor is infected', source)
     end
-
-    rescue_from TradeInvalid do |e|
-      source = { reason: e.reason }
-      new_error(:INVALID_TRADE, 'Invalid Trade', source)
-    end
   end
 
   class SurvivorInfectedError < StandardError
@@ -23,15 +18,6 @@ module Errors
       @id = id
     end
   end
-
-  class TradeInvalid < StandardError
-    attr_accessor :reason
-    def initialize(reason)
-      @reason = reason
-    end
-  end
-
-  private
 
   ERRORS = {
     NOT_FOUND: {

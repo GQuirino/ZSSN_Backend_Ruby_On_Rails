@@ -1,6 +1,18 @@
 class TradesController < ApplicationController
   include Errors
 
+  class TradeInvalid < StandardError
+    attr_accessor :reason
+    def initialize(reason)
+      @reason = reason
+    end
+  end
+
+  rescue_from TradeInvalid do |e|
+    source = { reason: e.reason }
+    new_error(:INVALID_TRADE, 'Invalid Trade', source)
+  end
+
   def update
     # check transactions
     resp = {}

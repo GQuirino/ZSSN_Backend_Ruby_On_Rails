@@ -19,12 +19,12 @@ RSpec.describe TradeService do
     # NOT RESPECT PRICE TABLE
     expect{
       TradeService.trade_items(survivor.id, {'ammunition' => 1 }, { 'water' => 1 })
-    }.to raise_error(Errors::TradeInvalid)
+    }.to raise_error(TradesController::TradeInvalid)
 
     # SURVIVOR DOESNT HAVE ENOUGH RESOURCES
     expect{
       TradeService.trade_items(survivor.id, { 'ammunition' => 8 }, { 'water' => 2 })
-    }.to raise_error(Errors::TradeInvalid)
+    }.to raise_error(TradesController::TradeInvalid)
   end
 
   it 'return survivor updated' do
