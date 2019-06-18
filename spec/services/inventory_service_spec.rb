@@ -18,6 +18,6 @@ RSpec.describe InventoryService do
   end
 
   it 'generate_points' do
-    expect(InventoryService.generate_points(survivor.inventories)).to eq 30
+    expect(InventoryService.generate_points(survivor.inventories)).to eq 20
   end
 end

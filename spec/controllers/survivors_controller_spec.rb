@@ -32,12 +32,12 @@ RSpec.describe SurvivorsController, type: :controller do
 
     it 'returns an error' do
       id = '999999'
-      get :show, params: { id: id}
+      get :show, params: { id: id }
       expect(response).to have_http_status(404)
 
       body = JSON.parse(response.body)
       expect(body).not_to be_empty
-      expect(body['status']).to eq(404)
+      expect(body['status_code']).to eq(404)
       expect(body['title']).to eq('NOT FOUND')
       expect(body['source']).to eq(
         'survivor' => id
@@ -85,7 +85,7 @@ RSpec.describe SurvivorsController, type: :controller do
 
       body = JSON.parse(response.body)
       expect(body).not_to be_empty
-      expect(body['status']).to eq(404)
+      expect(body['status_code']).to eq(404)
       expect(body['title']).to eq('NOT FOUND')
       expect(body['source']).to eq(
         'survivor' => id
@@ -153,7 +153,7 @@ RSpec.describe SurvivorsController, type: :controller do
       expect(body['gender']).to eq params[:gender]
       expect(body['age']).to eq params[:age]
       expect(body['flag_as_infected']).to eq 0
-      expect(body['points']).to eq 30
+      expect(body['points']).to eq 20
       expect(body['latitude']).to eq params[:latitude].to_s
       expect(body['longitude']).to eq params[:longitude].to_s
       expect(body['created_at']).to eq '2019-10-01T13:05:00.000Z'

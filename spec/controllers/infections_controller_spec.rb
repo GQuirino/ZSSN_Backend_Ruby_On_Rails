@@ -24,9 +24,9 @@ RSpec.describe InfectionsController, type: :controller do
       expect(body).not_to be_empty
       expect(body.length).to eq 4
 
-      expect(body['statusCode']).to eq 400
+      expect(body['status_code']).to eq 400
       expect(body['title']).to eq 'SURVIVOR INFECTED'
-      expect(body['details']).to eq 'Survivor already infected'
+      expect(body['details']).to eq 'Survivor is infected'
       expect(body['source']).to eq(
         'survivor' => @survivor.id.to_s
       )
