@@ -1,6 +1,6 @@
 module InventoryService
   class << self
-    # resources can receive:
+    # param resources can receive:
     # array of iventories = [ <Inventory>, <Inventory>, ... ]
     # hash { water: 1, food: 2 }
     def generate_points(resources)

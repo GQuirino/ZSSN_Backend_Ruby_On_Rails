@@ -5,6 +5,8 @@ class Survivor < ApplicationRecord
   scope :infected, -> { where('flag_as_infected >= ?', 3) }
   scope :non_infected, -> { where('flag_as_infected < ?', 3) }
 
+  before_create :before_create
+
   validates(
     :age,
     :name,
@@ -22,5 +24,12 @@ class Survivor < ApplicationRecord
     raise Errors::SurvivorInfectedError, self.id if is_infected
 
     is_infected
+  end
+
+  private
+
+  def before_create
+    self.flag_as_infected = self.flag_as_infected || 0
+    self.points = self.points || InventoryService.generate_points(self.inventories)
   end
 end
