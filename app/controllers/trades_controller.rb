@@ -22,10 +22,10 @@ class TradesController < ApplicationController
       idSurvivor: params[:idSurvivorTo],
       inventory: params[:inventory_request]
     }
-    Inventory.transaction do
-      @resp = TradeService.trade(offer, request)
-    end
-    render json: @resp, status: :ok
+
+    resp = TradeService.trade(offer, request)
+
+    render json: resp, status: :ok
   end
 
   def trade_params

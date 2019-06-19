@@ -1,18 +1,20 @@
 module TradeService
   class << self
     def trade(offer, request)
-      {
-        from: trade_items(
-          offer[:idSurvivor],
-          offer[:inventory],
-          request[:inventory]
-        ),
-        to: trade_items(
-          request[:idSurvivor],
-          request[:inventory],
-          offer[:inventory]
-        )
-      }
+      Inventory.transaction do
+        {
+          from: trade_items(
+            offer[:idSurvivor],
+            offer[:inventory],
+            request[:inventory]
+          ),
+          to: trade_items(
+            request[:idSurvivor],
+            request[:inventory],
+            offer[:inventory]
+          )
+        }
+      end
     end
 
     def trade_items(id_survivor, items_to_remove, items_to_add)
