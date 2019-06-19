@@ -3,11 +3,11 @@ require 'rails_helper'
 RSpec.describe InfectionsController, type: :controller do
   describe 'PUT #new' do
     before do
-      @survivor = create(:survivor_with_inventory, flag_as_infected: 0)
+      @survivor = create(:survivor, flag_as_infected: 0)
     end
 
-    it 'report new infection three times' do
-      (1..3).each  do |n|
+    it 'report new infection two times' do
+      (1..2).each  do |n|
         put :new, params: { id: @survivor.id }
         expect(response).to have_http_status(:ok)
         body = JSON.parse(response.body)
@@ -28,7 +28,7 @@ RSpec.describe InfectionsController, type: :controller do
       expect(body['title']).to eq 'SURVIVOR INFECTED'
       expect(body['details']).to eq 'Survivor is infected'
       expect(body['source']).to eq(
-        'survivor' => @survivor.id.to_s
+        'survivor' => @survivor.id
       )
     end
   end

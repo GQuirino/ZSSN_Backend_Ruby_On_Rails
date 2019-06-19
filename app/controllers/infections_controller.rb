@@ -3,12 +3,9 @@ class InfectionsController < ApplicationController
 
   def new
     @survivor = Survivor.find(params[:id])
-    raise SurvivorInfectedError, params[:id] if @survivor.infected?
 
-    if @survivor.update(flag_as_infected: @survivor.increment_infection)
-      render json: @survivor
-    else
-      render json: @survivor.errors, status: :unprocessable_entity
-    end
+    @survivor.update(flag_as_infected: @survivor.increment_infection)
+
+    render json: @survivor, status: :ok unless @survivor.infected?
   end
 end

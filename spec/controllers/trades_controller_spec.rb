@@ -42,7 +42,7 @@ RSpec.describe TradesController, type: :controller do
       expect(body).not_to be_empty
       expect(body.length).to eq 4
       expect(body['details']).to eq 'Survivor is infected'
-      expect(body['source']['survivor']).to eq survivor3.id.to_s
+      expect(body['source']['survivor']).to eq survivor3.id
     end
 
     it 'returns edited survivors inventories' do

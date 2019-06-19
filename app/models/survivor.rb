@@ -18,6 +18,9 @@ class Survivor < ApplicationRecord
   end
 
   def infected?
-    self.flag_as_infected >= 3
+    is_infected = self.flag_as_infected >= 3
+    raise Errors::SurvivorInfectedError, self.id if is_infected
+
+    is_infected
   end
 end
