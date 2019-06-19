@@ -1,5 +1,20 @@
 module TradeService
   class << self
+    def trade(offer, request)
+      {
+        from: trade_items(
+          offer[:idSurvivor],
+          offer[:inventory],
+          request[:inventory]
+        ),
+        to: trade_items(
+          request[:idSurvivor],
+          request[:inventory],
+          offer[:inventory]
+        )
+      }
+    end
+
     def trade_items(id_survivor, items_to_remove, items_to_add)
       @survivor = Survivor.find(id_survivor)
       raise Errors::SurvivorInfectedError, id_survivor if @survivor.infected?

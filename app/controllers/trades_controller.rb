@@ -14,21 +14,18 @@ class TradesController < ApplicationController
   end
 
   def update
-    # check transactions
-    resp = {}
+    offer = {
+      idSurvivor: params[:idSurvivorFrom],
+      inventory: params[:inventory_offer]
+    }
+    request = {
+      idSurvivor: params[:idSurvivorTo],
+      inventory: params[:inventory_request]
+    }
     Inventory.transaction do
-      resp[:from] = TradeService.trade_items(
-        params[:idSurvivorFrom],
-        params[:inventory_offer],
-        params[:inventory_request]
-      )
-      resp[:to] = TradeService.trade_items(
-        params[:idSurvivorTo],
-        params[:inventory_request],
-        params[:inventory_offer]
-      )
+      @resp = TradeService.trade(offer, request)
     end
-    render json: resp, status: :ok
+    render json: @resp, status: :ok
   end
 
   def trade_params
