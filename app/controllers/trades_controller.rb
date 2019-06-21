@@ -1,14 +1,10 @@
+require './lib/exceptions/survivor_infected_error'
+require './lib/exceptions/trade_invalid_error'
+
 class TradesController < ApplicationController
   include Errors
 
-  class TradeInvalid < StandardError
-    attr_accessor :reason
-    def initialize(reason)
-      @reason = reason
-    end
-  end
-
-  rescue_from TradeInvalid do |e|
+  rescue_from TradeInvalidError do |e|
     source = { reason: e.reason }
     new_error(:INVALID_TRADE, 'Invalid Trade', source)
   end

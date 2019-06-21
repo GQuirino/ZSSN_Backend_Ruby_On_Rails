@@ -1,3 +1,4 @@
+require './lib/exceptions/survivor_infected_error'
 class Survivor < ApplicationRecord
   has_many :inventories, dependent: :destroy
   accepts_nested_attributes_for :inventories
@@ -29,12 +30,5 @@ class Survivor < ApplicationRecord
   def before_create
     self.flag_as_infected = self.flag_as_infected || 0
     self.points = self.points || InventoryService.generate_points(self.inventories)
-  end
-
-  class SurvivorInfectedError < StandardError
-    attr_accessor :id
-    def initialize(id)
-      @id = id
-    end
   end
 end

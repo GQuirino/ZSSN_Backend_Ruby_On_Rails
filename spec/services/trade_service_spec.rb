@@ -15,16 +15,16 @@ RSpec.describe TradeService do
     create(:inventory, :ammunition, resource_amount: 4, survivor: survivor)
   end
 
-  it 'return error TradeInvalid' do
+  it 'return error TradeInvalidError' do
     # NOT RESPECT PRICE TABLE
     expect{
       TradeService.trade_items(survivor.id, {'ammunition' => 1 }, { 'water' => 1 })
-    }.to raise_error(TradesController::TradeInvalid)
+    }.to raise_error(TradeInvalidError)
 
     # SURVIVOR DOESNT HAVE ENOUGH RESOURCES
     expect{
       TradeService.trade_items(survivor.id, { 'ammunition' => 8 }, { 'water' => 2 })
-    }.to raise_error(TradesController::TradeInvalid)
+    }.to raise_error(TradeInvalidError)
   end
 
   it 'return survivor updated' do

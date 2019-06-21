@@ -1,3 +1,4 @@
+require './lib/exceptions/survivor_infected_error'
 module Errors
   extend ActiveSupport::Concern
   included do
@@ -16,7 +17,7 @@ module Errors
       new_error(:INTERNAL, 'internal Error', source)
     end
 
-    rescue_from Survivor::SurvivorInfectedError do |e|
+    rescue_from SurvivorInfectedError do |e|
       source = { survivor: e.id }
       new_error(:SURVIVOR_INFECTED, 'Survivor is infected', source)
     end
