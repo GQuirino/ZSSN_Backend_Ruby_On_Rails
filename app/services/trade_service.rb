@@ -11,7 +11,7 @@ module TradeService
 
     def trade_items(id_survivor, items_to_remove, items_to_add)
       @survivor = Survivor.find(id_survivor)
-      raise Errors::SurvivorInfectedError, id_survivor if @survivor.infected?
+      @survivor.infected?
 
       enough_resources?(@survivor, items_to_remove)
       respect_price_table?(items_to_remove, items_to_add)

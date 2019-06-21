@@ -6,16 +6,19 @@ module Errors
       new_error(:NOT_FOUND, 'Survivor not found', source)
     end
 
-    rescue_from SurvivorInfectedError do |e|
+    rescue_from ActionController::ParameterMissing do |e|
+      source = e
+      new_error(:MISSING_DATA, 'Missing Data', source)
+    end
+
+    rescue_from ActiveModel::UnknownAttributeError do |e|
+      source = e.attribute ? e.attribute : e
+      new_error(:INTERNAL, 'internal Error', source)
+    end
+
+    rescue_from Survivor::SurvivorInfectedError do |e|
       source = { survivor: e.id }
       new_error(:SURVIVOR_INFECTED, 'Survivor is infected', source)
-    end
-  end
-
-  class SurvivorInfectedError < StandardError
-    attr_accessor :id
-    def initialize(id)
-      @id = id
     end
   end
 

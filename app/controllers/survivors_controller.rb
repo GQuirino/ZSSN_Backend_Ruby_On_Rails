@@ -5,34 +5,26 @@ class SurvivorsController < ApplicationController
   # GET /survivors
   def index
     @survivors = Survivor.all
-    render json: @survivors.to_json(methods: [:inventories])
+    render json: @survivors.to_json(methods: [:inventories]), status: :ok
   end
 
   # GET /survivors/1
   def show
-    render json: @survivor.to_json(methods: [:inventories])
+    render json: @survivor.to_json(methods: [:inventories]), status: :ok
   end
 
   # POST /survivors
   def create
     @survivor = Survivor.new(survivor_params)
-
-    if @survivor.save
-      resp = @survivor.to_json(methods: [:inventories])
-      render json: resp, status: :created
-    else
-      render json: @survivor.errors, status: :unprocessable_entity
-    end
+    @survivor.save
+    survivor_json = @survivor.to_json(methods: [:inventories])
+    render json: survivor_json, status: :created
   end
 
   # PATCH/PUT /survivors/1
   def update
-    if @survivor.update(survivor_edit_params)
-      resp = @survivor
-      render json: resp
-    else
-      render json: @survivor.errors, status: :unprocessable_entity
-    end
+    @survivor.update(survivor_edit_params) unless @survivor.infected?
+    render json: @survivor, status: :ok
   end
 
   private

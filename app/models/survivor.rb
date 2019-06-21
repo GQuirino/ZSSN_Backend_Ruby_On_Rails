@@ -20,10 +20,8 @@ class Survivor < ApplicationRecord
   end
 
   def infected?
-    is_infected = self.flag_as_infected >= 3
-    raise Errors::SurvivorInfectedError, self.id if is_infected
-
-    is_infected
+    raise SurvivorInfectedError, self.id if self.flag_as_infected >= 3
+    false
   end
 
   private
@@ -31,5 +29,12 @@ class Survivor < ApplicationRecord
   def before_create
     self.flag_as_infected = self.flag_as_infected || 0
     self.points = self.points || InventoryService.generate_points(self.inventories)
+  end
+
+  class SurvivorInfectedError < StandardError
+    attr_accessor :id
+    def initialize(id)
+      @id = id
+    end
   end
 end
