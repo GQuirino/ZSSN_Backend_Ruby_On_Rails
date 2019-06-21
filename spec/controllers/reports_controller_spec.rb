@@ -45,10 +45,10 @@ RSpec.describe ReportsController, type: :controller do
       expect(body['non_infected']).to eq 1
       expect(body['percent']).to eq 100.0
       expect(body['avg_resource_by_survivor']).to eq(
-        'water' => 20.0,
-        'food' => 30.0,
-        'medication' => 40.0,
-        'amunition' => 50.0
+        'water' => "20.0",
+        'food' => "30.0",
+        'medication' => "40.0",
+        'amunition' => "50.0"
       )
     end
   end
