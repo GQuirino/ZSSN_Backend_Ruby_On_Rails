@@ -11,11 +11,11 @@ class TradesController < ApplicationController
 
   def update
     offer = {
-      idSurvivor: params[:idSurvivorFrom],
+      id_survivor: params[:id_survivor_from],
       inventory: params[:inventory_offer]
     }
     request = {
-      idSurvivor: params[:idSurvivorTo],
+      id_survivor: params[:id_survivor_to],
       inventory: params[:inventory_request]
     }
 

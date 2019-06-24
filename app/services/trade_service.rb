@@ -4,8 +4,8 @@ module TradeService
     def trade(offer, request)
       Inventory.transaction do
         {
-          from: trade_items(offer[:idSurvivor], offer[:inventory], request[:inventory]),
-          to: trade_items(request[:idSurvivor], request[:inventory], offer[:inventory])
+          from: trade_items(offer[:id_survivor], offer[:inventory], request[:inventory]),
+          to: trade_items(request[:id_survivor], request[:inventory], offer[:inventory])
         }
       end
     end

@@ -9,8 +9,8 @@ RSpec.describe TradesController, type: :controller do
     it 'returns error not Found' do
       id_from = '999'
       put :update, params: {
-        idSurvivorFrom: id_from,
-        idSurvivorTo: survivor2.id,
+        id_survivor_from: id_from,
+        id_survivor_to: survivor2.id,
         survivor: {
           inventory_offer: { ammunition: 4 },
           inventory_request: { water: 1 }
@@ -28,8 +28,8 @@ RSpec.describe TradesController, type: :controller do
 
     it 'returns error survivor infected' do
       put :update, params: {
-        idSurvivorFrom: survivor3.id,
-        idSurvivorTo: survivor2.id,
+        id_survivor_from: survivor3.id,
+        id_survivor_to: survivor2.id,
         survivor: {
           inventory_offer: { ammunition: 4 },
           inventory_request: { water: 1 }
@@ -49,8 +49,8 @@ RSpec.describe TradesController, type: :controller do
       AMMUNITION = 4
       WATER = 1
       put :update, params: {
-        idSurvivorFrom: survivor1.id,
-        idSurvivorTo: survivor2.id,
+        id_survivor_from: survivor1.id,
+        id_survivor_to: survivor2.id,
         inventory_offer: { ammunition: AMMUNITION },
         inventory_request: { water: WATER }
       }
