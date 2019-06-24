@@ -8,30 +8,30 @@ RSpec.describe ReportService do
   let!(:ammunition) { create(:inventory, :ammunition, resource_amount: 4, survivor: survivor1) }
   let!(:survivor2) { create(:survivor_with_inventory, flag_as_infected: 3) }
 
-  it 'generate percentage' do
-    expect(
-      ReportService.generate_percentage(50, 100)
-    ).to eql(
-      50.00
-    )
+  context 'survivor non-infected' do
+    it 'generate report of non-infected' do
+      report = ReportService.generate_report_non_infected
+      expect(report[:non_infected]).to eql 1
+      expect(report[:percent]).to eql 50.0
+      expect(report[:avg_resource_by_survivor]).to eql(
+        water: 1.0,
+        food: 2.0,
+        medication: 3.0,
+        amunition: 4.0
+      )
+    end
   end
 
-  it 'generate report of infected survivors' do
-    report = ReportService.generate_report_infected
-    expect(report[:infected]).to eql 1
-    expect(report[:percent]).to eql 50.0
-    expect(report[:points_lost]).to eql survivor2.points
+  context 'survivor infected' do
+    it 'generate report of infected survivors' do
+      report = ReportService.generate_report_infected
+      expect(report[:infected]).to eql 1
+      expect(report[:percent]).to eql 50.0
+      expect(report[:points_lost]).to eql survivor2.points
+    end
   end
 
-  it 'generate report of non-infected' do
-    report = ReportService.generate_report_non_infected
-    expect(report[:non_infected]).to eql 1
-    expect(report[:percent]).to eql 50.0
-    expect(report[:avg_resource_by_survivor]).to eql(
-      water: 1.0,
-      food: 2.0,
-      medication: 3.0,
-      amunition: 4.0
-    )
+  describe '.generate_percentage' do
+    it { expect(ReportService.generate_percentage(50, 100)).to eql(50.00) }
   end
 end

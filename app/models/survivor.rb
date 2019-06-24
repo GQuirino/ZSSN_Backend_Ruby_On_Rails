@@ -16,7 +16,7 @@ class Survivor < ApplicationRecord
     presence: true
   )
 
-  def increment_infection
+  def increment_infection!
     self.flag_as_infected += 1
   end
 

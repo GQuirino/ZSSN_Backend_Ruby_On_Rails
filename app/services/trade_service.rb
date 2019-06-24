@@ -10,6 +10,8 @@ module TradeService
       end
     end
 
+    private
+
     def trade_items(id_survivor, items_to_remove, items_to_add)
       @survivor = Survivor.find(id_survivor)
       @survivor.infected?
@@ -19,8 +21,6 @@ module TradeService
       exchange_items(items_to_remove, items_to_add, @survivor)
       @survivor.as_json(methods: [:inventories])
     end
-
-    private
 
     def exchange_items(to_remove, to_add, survivor)
       remove_lambda = ->(resource, val) { resource.resource_amount -= val.to_i }

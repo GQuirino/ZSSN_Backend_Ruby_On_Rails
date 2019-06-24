@@ -4,7 +4,7 @@ class InfectionsController < ApplicationController
   def new
     @survivor = Survivor.find(params[:id])
 
-    @survivor.update(flag_as_infected: @survivor.increment_infection)
+    @survivor.update(flag_as_infected: @survivor.increment_infection!)
 
     render json: @survivor, status: :ok unless @survivor.infected?
   end

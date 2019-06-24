@@ -46,13 +46,11 @@ RSpec.describe TradesController, type: :controller do
     end
 
     it 'returns edited survivors inventories' do
-      AMMUNITION = 4
-      WATER = 1
       put :update, params: {
         id_survivor_from: survivor1.id,
         id_survivor_to: survivor2.id,
-        inventory_offer: { ammunition: AMMUNITION },
-        inventory_request: { water: WATER }
+        inventory_offer: { ammunition: 4 },
+        inventory_request: { water: 1 }
       }
 
       expect(response).to have_http_status(:ok)
