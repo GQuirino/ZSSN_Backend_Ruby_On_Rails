@@ -3,11 +3,8 @@ require './lib/exceptions/trade_invalid_error'
 
 class TradesController < ApplicationController
   include Errors
-
-  rescue_from TradeInvalidError do |e|
-    source = { reason: e.reason }
-    new_error(:INVALID_TRADE, 'Invalid Trade', source)
-  end
+  rescue_from SurvivorInfectedError, with: :raise_survivor_infected
+  rescue_from TradeInvalidError, with: :raise_trade_invalid
 
   def update
     offer = {

@@ -1,5 +1,6 @@
 class InfectionsController < ApplicationController
   include Errors
+  rescue_from SurvivorInfectedError, with: :raise_survivor_infected
 
   def new
     @survivor = Survivor.find(params[:id])

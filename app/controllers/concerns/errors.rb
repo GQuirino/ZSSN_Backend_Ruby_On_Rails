@@ -16,12 +16,19 @@ module Errors
       source = e.attribute ? e.attribute : e
       new_error(:INTERNAL, 'internal Error', source)
     end
-
-    rescue_from SurvivorInfectedError do |e|
-      source = { survivor: e.id }
-      new_error(:SURVIVOR_INFECTED, 'Survivor is infected', source)
-    end
   end
+
+  def raise_survivor_infected(e)
+    source = { survivor: e.id }
+    new_error(:SURVIVOR_INFECTED, 'Survivor is infected', source)
+  end
+
+  def raise_trade_invalid(e)
+    source = { reason: e.reason }
+    new_error(:INVALID_TRADE, 'Invalid Trade', source)
+  end
+
+  private
 
   ERRORS = {
     NOT_FOUND: {
