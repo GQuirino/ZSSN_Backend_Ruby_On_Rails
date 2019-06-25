@@ -16,7 +16,7 @@ RSpec.describe AverageResourceBySurvivorQuery do
     create(:inventory, :ammunition, resource_amount: 3, survivor: survivor2)
   end
 
-  subject { Class.new.include(AverageResourceBySurvivorQuery).new }
+  subject { Class.include(AverageResourceBySurvivorQuery).new }
 
   describe '.avg_resource' do
     it { expect(subject.avg_resource('water')).to eq 2.50 }
