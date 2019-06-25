@@ -1,11 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe SurvivorsController, type: :controller do
+  let!(:survivor) { create(:survivor) }
+  before do
+    create(:survivor)
+  end
+
   describe 'GET #index' do
     it 'returns list of survivors' do
-      create(:survivor_with_inventory)
-      create(:survivor_with_inventory)
-
       get :index
 
       expect(response).to have_http_status(:ok)
@@ -19,9 +21,7 @@ RSpec.describe SurvivorsController, type: :controller do
 
   describe 'GET #show' do
     it 'returns one survivor' do
-      @survivor = create(:survivor_with_inventory)
-
-      get :show, params: { id: @survivor.id }
+      get :show, params: { id: survivor.id }
 
       expect(response).to have_http_status(:ok)
 
@@ -47,12 +47,10 @@ RSpec.describe SurvivorsController, type: :controller do
 
   describe 'PUT #update' do
     it 'returns survivor updated' do
-      @survivor = create(:survivor_with_inventory)
-
       latitude = '999.666'
       longitude = '888.444'
       put :update, params: {
-        id: @survivor.id,
+        id: survivor.id,
         survivor: {
           latitude: latitude,
           longitude: longitude

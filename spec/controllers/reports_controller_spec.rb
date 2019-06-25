@@ -27,7 +27,11 @@ RSpec.describe ReportsController, type: :controller do
   end
 
   describe 'GET #non-infected' do
-    let!(:survivor) { create(:survivor_with_inventory, flag_as_infected: 0) }
+    let(:survivor) { create(:survivor, flag_as_infected: 0) }
+    let!(:water) { create(:inventory, :water, resource_amount: 20, survivor: survivor) }
+    let!(:food) { create(:inventory, :food, resource_amount: 30, survivor: survivor) }
+    let!(:medication) { create(:inventory, :medication, resource_amount: 40, survivor: survivor) }
+    let!(:ammunition) { create(:inventory, :ammunition, resource_amount: 50, survivor: survivor) }
 
     before { get :non_infected }
 
@@ -45,10 +49,10 @@ RSpec.describe ReportsController, type: :controller do
       expect(body['non_infected']).to eq 1
       expect(body['percent']).to eq 100.0
       expect(body['avg_resource_by_survivor']).to eq(
-        'water' => "20.0",
-        'food' => "30.0",
-        'medication' => "40.0",
-        'amunition' => "50.0"
+        'water' => "#{water.resource_amount}.0",
+        'food' => "#{food.resource_amount}.0",
+        'medication' => "#{medication.resource_amount}.0",
+        'amunition' => "#{ammunition.resource_amount}.0"
       )
     end
   end

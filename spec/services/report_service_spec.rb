@@ -6,7 +6,7 @@ RSpec.describe ReportService do
   let!(:food) { create(:inventory, :food, resource_amount: 2, survivor: survivor1) }
   let!(:medication) { create(:inventory, :medication, resource_amount: 3, survivor: survivor1) }
   let!(:ammunition) { create(:inventory, :ammunition, resource_amount: 4, survivor: survivor1) }
-  let!(:survivor2) { create(:survivor_with_inventory, flag_as_infected: 3) }
+  let!(:survivor2) { create(:survivor, flag_as_infected: 3, points: 30) }
 
   context 'survivor non-infected' do
     it 'generate report of non-infected' do
