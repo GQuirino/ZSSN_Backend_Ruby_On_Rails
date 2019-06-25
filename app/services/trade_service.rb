@@ -16,9 +16,9 @@ module TradeService
       survivor = Survivor.find(id_survivor)
       survivor.infected?
 
-      enough_resources?(@survivor, items_to_remove)
+      enough_resources?(survivor, items_to_remove)
       respect_price_table?(items_to_remove, items_to_add)
-      exchange_items(items_to_remove, items_to_add, @survivor)
+      exchange_items(items_to_remove, items_to_add, survivor)
       survivor.as_json(methods: [:inventories])
     end
 

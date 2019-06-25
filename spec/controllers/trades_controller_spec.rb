@@ -2,9 +2,21 @@ require 'rails_helper'
 
 RSpec.describe TradesController, type: :controller do
   describe 'PUT #update' do
-    let!(:survivor1) { create(:survivor_with_inventory, flag_as_infected: 0) }
-    let!(:survivor2) { create(:survivor_with_inventory, flag_as_infected: 0) }
-    let!(:survivor3) { create(:survivor_with_inventory, flag_as_infected: 3) }
+    let!(:survivor1) { create(:survivor, flag_as_infected: 0) }
+    let!(:survivor2) { create(:survivor, flag_as_infected: 0) }
+    let!(:survivor3) { create(:survivor, flag_as_infected: 3) }
+
+    before do
+      create(:inventory, :water, resource_amount: 1, survivor: survivor1)
+      create(:inventory, :food, resource_amount: 2, survivor: survivor1)
+      create(:inventory, :medication, resource_amount: 3, survivor: survivor1)
+      create(:inventory, :ammunition, resource_amount: 4, survivor: survivor1)
+
+      create(:inventory, :water, resource_amount: 1, survivor: survivor2)
+      create(:inventory, :food, resource_amount: 2, survivor: survivor2)
+      create(:inventory, :medication, resource_amount: 3, survivor: survivor2)
+      create(:inventory, :ammunition, resource_amount: 4, survivor: survivor2)
+    end
 
     it 'returns error not Found' do
       id_from = '999'
