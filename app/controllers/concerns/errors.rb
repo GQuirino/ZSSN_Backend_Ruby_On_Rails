@@ -1,4 +1,3 @@
-require './lib/exceptions/survivor_infected_error'
 module Errors
   extend ActiveSupport::Concern
   included do
@@ -14,7 +13,11 @@ module Errors
 
     rescue_from ActiveModel::UnknownAttributeError do |e|
       source = e.attribute ? e.attribute : e
-      new_error(:INTERNAL, 'internal Error', source)
+      new_error(:INTERNAL, 'nternal error', source)
+    end
+
+    rescue_from InternalError do |e|
+      new_error(:INTERNAL, 'internal error', e)
     end
   end
 

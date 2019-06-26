@@ -18,15 +18,23 @@ class SurvivorsController < ApplicationController
   # POST /survivors
   def create
     @survivor = Survivor.new(survivor_params)
-    @survivor.save
-    survivor_json = @survivor.to_json(methods: [:inventories])
-    render json: survivor_json, status: :created
+    if @survivor.save
+      render json: @survivor.to_json(methods: [:inventories]), status: :created
+    else
+      raise InternalError, @survivor.errors || 'create method'
+    end
   end
 
   # PATCH/PUT /survivors/1
   def update
-    @survivor.update(survivor_edit_params) unless @survivor.infected?
-    render json: @survivor, status: :ok
+    raise SurvivorInfectedError, @survivor.id if @survivor.infected?
+
+    if @survivor.update(survivor_edit_params)
+      render json: @survivor, status: :ok
+    else
+      raise InternalError, @survivor.errors || 'update method'
+    end
+
   end
 
   private

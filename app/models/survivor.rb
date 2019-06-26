@@ -21,8 +21,7 @@ class Survivor < ApplicationRecord
   end
 
   def infected?
-    raise SurvivorInfectedError, self.id if self.flag_as_infected >= 3
-    false
+    self.flag_as_infected >= 3
   end
 
   private

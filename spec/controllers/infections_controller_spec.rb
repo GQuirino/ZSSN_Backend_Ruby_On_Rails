@@ -2,24 +2,22 @@ require 'rails_helper'
 
 RSpec.describe InfectionsController, type: :controller do
   describe 'PUT #new' do
-    before do
-      @survivor = create(:survivor, flag_as_infected: 0)
-    end
+    let(:survivor) { create(:survivor, flag_as_infected: 0) }
 
     it 'report new infection two times' do
-      (1..2).each  do |n|
-        put :update, params: { id: @survivor.id }
+      (1..3).each  do |n|
+        put :update, params: { id: survivor.id }
         expect(response).to have_http_status(:ok)
         body = JSON.parse(response.body)
         expect(body).not_to be_empty
         expect(body.length).to eq 10
 
-        expect(body['id']).to eq @survivor.id
+        expect(body['id']).to eq survivor.id
         expect(body['flag_as_infected']).to eq(n)
       end
 
       # SURVIVOR INFECTED
-      put :update, params: { id: @survivor.id }
+      put :update, params: { id: survivor.id }
       body = JSON.parse(response.body)
       expect(body).not_to be_empty
       expect(body.length).to eq 4
@@ -28,7 +26,7 @@ RSpec.describe InfectionsController, type: :controller do
       expect(body['title']).to eq 'SURVIVOR INFECTED'
       expect(body['details']).to eq 'Survivor is infected'
       expect(body['source']).to eq(
-        'survivor' => @survivor.id
+        'survivor' => survivor.id
       )
     end
   end

@@ -5,8 +5,12 @@ class InfectionsController < ApplicationController
   def update
     @survivor = Survivor.find(params[:id])
 
-    @survivor.update(flag_as_infected: @survivor.increment_infection!)
+    raise SurvivorInfectedError, @survivor.id if @survivor.infected?
 
-    render json: @survivor, status: :ok unless @survivor.infected?
+    if @survivor.update(flag_as_infected: @survivor.increment_infection!)
+      render json: @survivor, status: :ok
+    else
+      raise InternalError, @survivor.errors || 'update method'
+    end
   end
 end
