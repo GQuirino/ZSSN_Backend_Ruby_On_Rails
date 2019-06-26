@@ -28,7 +28,7 @@ class Survivor < ApplicationRecord
   private
 
   def before_create
-    self.flag_as_infected = self.flag_as_infected || 0
-    self.points = self.points || InventoryService.generate_points(self.inventories)
+    self.flag_as_infected ||= 0
+    self.points ||= InventoryService.generate_points(self.inventories)
   end
 end

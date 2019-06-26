@@ -8,7 +8,7 @@ RSpec.describe InfectionsController, type: :controller do
 
     it 'report new infection two times' do
       (1..2).each  do |n|
-        put :new, params: { id: @survivor.id }
+        put :update, params: { id: @survivor.id }
         expect(response).to have_http_status(:ok)
         body = JSON.parse(response.body)
         expect(body).not_to be_empty
@@ -19,7 +19,7 @@ RSpec.describe InfectionsController, type: :controller do
       end
 
       # SURVIVOR INFECTED
-      put :new, params: { id: @survivor.id }
+      put :update, params: { id: @survivor.id }
       body = JSON.parse(response.body)
       expect(body).not_to be_empty
       expect(body.length).to eq 4
