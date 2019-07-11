@@ -7,13 +7,12 @@ class Survivor < ApplicationRecord
   scope :infected, -> { where('flag_as_infected >= ?', INFECTION_RATE) }
   scope :non_infected, -> { where('flag_as_infected < ?', INFECTION_RATE) }
 
-  validates(
-    :age,
-    :name,
-    :gender, :latitude,
-    :longitude,
-    presence: true
-  )
+  validates :age,
+            :name,
+            :gender,
+            :latitude,
+            :longitude,
+            presence: true
 
   def increment_infection!
     self.flag_as_infected += 1
