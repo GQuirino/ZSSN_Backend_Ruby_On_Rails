@@ -1,12 +1,11 @@
 require './lib/exceptions/survivor_infected_error'
 class Survivor < ApplicationRecord
+  INFECTION_RATE = 3
   has_many :inventories, dependent: :destroy
   accepts_nested_attributes_for :inventories
 
-  scope :infected, -> { where('flag_as_infected >= ?', 3) }
-  scope :non_infected, -> { where('flag_as_infected < ?', 3) }
-
-  before_create :before_create
+  scope :infected, -> { where('flag_as_infected >= ?', INFECTION_RATE) }
+  scope :non_infected, -> { where('flag_as_infected < ?', INFECTION_RATE) }
 
   validates(
     :age,
@@ -21,13 +20,14 @@ class Survivor < ApplicationRecord
   end
 
   def infected?
-    self.flag_as_infected >= 3
+    self.flag_as_infected >= INFECTION_RATE
   end
 
-  private
+  def initialize_infection
+    self.flag_as_infected = 0
+  end
 
-  def before_create
-    self.flag_as_infected ||= 0
-    self.points ||= InventoryService.generate_points(self.inventories)
+  def initialize_points
+    self.points = InventoryService.generate_points(self.inventories)
   end
 end

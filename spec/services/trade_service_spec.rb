@@ -22,7 +22,7 @@ RSpec.describe TradeService do
       it {
         offer[:inventory] = { 'ammunition' => 1 }
         request[:inventory] = { 'water' => 1 }
-        expect{
+        expect {
           TradeService.trade(offer, request)
         }.to raise_error(TradeInvalidError)
       }
@@ -30,9 +30,9 @@ RSpec.describe TradeService do
 
     context 'survivor without resources' do
       it {
-        offer[:inventory] = {'ammunition' => 8 }
-        request[:inventory] =  { 'water' => 2 }
-        expect{
+        offer[:inventory] = { 'ammunition' => 8 }
+        request[:inventory] = { 'water' => 2 }
+        expect {
           TradeService.trade(offer, request)
         }.to raise_error(TradeInvalidError)
       }

@@ -7,6 +7,5 @@ FactoryBot.define do
     longitude { FFaker::Geolocation.lng }
     gender { FFaker::GenderBR.random }
     points { 0 }
-
   end
 end
