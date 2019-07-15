@@ -33,9 +33,9 @@ RSpec.describe TradesController, type: :controller do
 
       body = JSON.parse(response.body)
       expect(body).not_to be_empty
-      expect(body.length).to eq 4
-      expect(body['details']).to eq 'Survivor not found'
-      expect(body['source']['survivor']).to eq id_from
+      expect(body.length).to eql 4
+      expect(body['details']).to eql 'Survivor not found'
+      expect(body['source']['survivor']).to eql id_from
     end
 
     it 'returns error survivor infected' do
@@ -52,9 +52,9 @@ RSpec.describe TradesController, type: :controller do
 
       body = JSON.parse(response.body)
       expect(body).not_to be_empty
-      expect(body.length).to eq 4
-      expect(body['details']).to eq 'Survivor is infected'
-      expect(body['source']['survivor']).to eq survivor3.id
+      expect(body.length).to eql 4
+      expect(body['details']).to eql 'Survivor is infected'
+      expect(body['source']['survivor']).to eql survivor3.id
     end
 
     it 'returns edited survivors inventories' do
@@ -69,7 +69,7 @@ RSpec.describe TradesController, type: :controller do
 
       body = JSON.parse(response.body)
       expect(body).not_to be_empty
-      expect(body.length).to eq 2
+      expect(body.length).to eql 2
     end
   end
 end

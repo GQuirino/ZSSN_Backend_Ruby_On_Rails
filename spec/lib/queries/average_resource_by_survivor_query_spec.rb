@@ -19,9 +19,9 @@ RSpec.describe AverageResourceBySurvivorQuery do
   subject { Class.include(AverageResourceBySurvivorQuery).new }
 
   describe '.avg_resource' do
-    it { expect(subject.avg_resource('water')).to eq 2.50 }
-    it { expect(subject.avg_resource('food')).to eq 2.50 }
-    it { expect(subject.avg_resource('medication')).to eq 2.50 }
-    it { expect(subject.avg_resource('ammunition')).to eq 2.50 }
+    it { expect(subject.avg_resource('water')).to eql 2.50 }
+    it { expect(subject.avg_resource('food')).to eql 2.50 }
+    it { expect(subject.avg_resource('medication')).to eql 2.50 }
+    it { expect(subject.avg_resource('ammunition')).to eql 2.50 }
   end
 end

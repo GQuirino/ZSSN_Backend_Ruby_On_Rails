@@ -2,7 +2,7 @@ class SurvivorsController < ApplicationController
   include Errors
   before_action :set_survivor, only: %i[show update destroy]
 
-  rescue_from SurvivorInfectedError, with: :raise_survivor_infected
+  rescue_from SurvivorInfectedError, with: :render_survivor_infected
 
   # GET /survivors
   def index

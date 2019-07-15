@@ -3,32 +3,32 @@ module Errors
   included do
     rescue_from ActiveRecord::RecordNotFound do |e|
       source = { survivor: e.id }
-      new_error(:NOT_FOUND, 'Survivor not found', source)
+      render_error(:NOT_FOUND, 'Survivor not found', source)
     end
 
     rescue_from ActionController::ParameterMissing do |e|
       source = e
-      new_error(:MISSING_DATA, 'Missing Data', source)
+      render_error(:MISSING_DATA, 'Missing Data', source)
     end
 
     rescue_from ActiveModel::UnknownAttributeError do |e|
-      source = e.attribute ? e.attribute : e
-      new_error(:INTERNAL, 'nternal error', source)
+      source =  e.try(:attribute) || e
+      render_error(:INTERNAL, 'nternal error', source)
     end
 
     rescue_from InternalError do |e|
-      new_error(:INTERNAL, 'internal error', e)
+      render_error(:INTERNAL, 'internal error', e)
     end
   end
 
-  def raise_survivor_infected(e)
+  def render_survivor_infected(e)
     source = { survivor: e.id }
-    new_error(:SURVIVOR_INFECTED, 'Survivor is infected', source)
+    render_error(:SURVIVOR_INFECTED, 'Survivor is infected', source)
   end
 
-  def raise_trade_invalid(e)
+  def render_trade_invalid(e)
     source = { reason: e.reason }
-    new_error(:INVALID_TRADE, 'Invalid Trade', source)
+    render_error(:INVALID_TRADE, 'Invalid Trade', source)
   end
 
   private
@@ -56,7 +56,7 @@ module Errors
     }
   }.freeze
 
-  def new_error(code, details, source = {})
+  def render_error(code, details, source = {})
     error = ERRORS[code || :INTERNAL]
     error[:details] = details
     error[:source] = source

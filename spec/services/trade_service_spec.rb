@@ -63,10 +63,10 @@ RSpec.describe TradeService do
 
       it 'exchange resources' do
         expect(new_offer_ammunition).to eql ammunition_offer.resource_amount - AMMUNITION
-        expect(new_offer_water).to eq water_offer.resource_amount + WATER
+        expect(new_offer_water).to eql water_offer.resource_amount + WATER
 
         expect(new_request_ammunition).to eql ammunition_request.resource_amount + AMMUNITION
-        expect(new_request_water).to eq water_request.resource_amount - WATER
+        expect(new_request_water).to eql water_request.resource_amount - WATER
       end
     end
   end

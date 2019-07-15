@@ -14,8 +14,8 @@ RSpec.describe SurvivorsController, type: :controller do
 
       body = JSON.parse(response.body)
       expect(body).not_to be_empty
-      expect(body.length).to eq(2)
-      expect(body[0].length).to eq(11)
+      expect(body.length).to eql(2)
+      expect(body[0].length).to eql(11)
     end
   end
 
@@ -27,7 +27,7 @@ RSpec.describe SurvivorsController, type: :controller do
 
       body = JSON.parse(response.body)
       expect(body).not_to be_empty
-      expect(body.length).to eq(11)
+      expect(body.length).to eql(11)
     end
 
     it 'returns an error' do
@@ -37,9 +37,9 @@ RSpec.describe SurvivorsController, type: :controller do
 
       body = JSON.parse(response.body)
       expect(body).not_to be_empty
-      expect(body['status_code']).to eq(404)
-      expect(body['title']).to eq('NOT FOUND')
-      expect(body['source']).to eq(
+      expect(body['status_code']).to eql(404)
+      expect(body['title']).to eql('NOT FOUND')
+      expect(body['source']).to eql(
         'survivor' => id
       )
     end
@@ -61,9 +61,9 @@ RSpec.describe SurvivorsController, type: :controller do
 
       body = JSON.parse(response.body)
       expect(body).not_to be_empty
-      expect(body.length).to eq 10
-      expect(body['latitude']).to eq latitude
-      expect(body['longitude']).to eq longitude
+      expect(body.length).to eql 10
+      expect(body['latitude']).to eql latitude
+      expect(body['longitude']).to eql longitude
     end
 
     it 'returns an error' do
@@ -83,9 +83,9 @@ RSpec.describe SurvivorsController, type: :controller do
 
       body = JSON.parse(response.body)
       expect(body).not_to be_empty
-      expect(body['status_code']).to eq(404)
-      expect(body['title']).to eq('NOT FOUND')
-      expect(body['source']).to eq(
+      expect(body['status_code']).to eql(404)
+      expect(body['title']).to eql('NOT FOUND')
+      expect(body['source']).to eql(
         'survivor' => id
       )
     end
@@ -145,21 +145,21 @@ RSpec.describe SurvivorsController, type: :controller do
 
       body = JSON.parse(response.body)
       expect(body).not_to be_empty
-      expect(body.length).to eq 11
-      expect(body['inventories'].length).to eq 4
-      expect(body['name']).to eq params[:name]
-      expect(body['gender']).to eq params[:gender]
-      expect(body['age']).to eq params[:age]
-      expect(body['flag_as_infected']).to eq 0
-      expect(body['points']).to eq 20
-      expect(body['latitude']).to eq params[:latitude].to_s
-      expect(body['longitude']).to eq params[:longitude].to_s
-      expect(body['created_at']).to eq '2019-10-01T13:05:00.000Z'
-      expect(body['updated_at']).to eq '2019-10-01T13:05:00.000Z'
-      expect(resource_created?(body['inventories'], water)).to eq(true)
-      expect(resource_created?(body['inventories'], food)).to eq(true)
-      expect(resource_created?(body['inventories'], medication)).to eq(true)
-      expect(resource_created?(body['inventories'], ammunition)).to eq(true)
+      expect(body.length).to eql 11
+      expect(body['inventories'].length).to eql 4
+      expect(body['name']).to eql params[:name]
+      expect(body['gender']).to eql params[:gender]
+      expect(body['age']).to eql params[:age]
+      expect(body['flag_as_infected']).to eql 0
+      expect(body['points']).to eql 20
+      expect(body['latitude']).to eql params[:latitude].to_s
+      expect(body['longitude']).to eql params[:longitude].to_s
+      expect(body['created_at']).to eql '2019-10-01T13:05:00.000Z'
+      expect(body['updated_at']).to eql '2019-10-01T13:05:00.000Z'
+      expect(resource_created?(body['inventories'], water)).to eql(true)
+      expect(resource_created?(body['inventories'], food)).to eql(true)
+      expect(resource_created?(body['inventories'], medication)).to eql(true)
+      expect(resource_created?(body['inventories'], ammunition)).to eql(true)
     end
   end
 end

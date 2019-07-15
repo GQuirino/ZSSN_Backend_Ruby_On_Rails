@@ -14,15 +14,15 @@ RSpec.describe ReportsController, type: :controller do
       expect(response).to have_http_status(:ok)
       body = JSON.parse(response.body)
       expect(body).not_to be_empty
-      expect(body.length).to eq(3)
+      expect(body.length).to eql(3)
     end
 
     it 'responds correct payload' do
       body = JSON.parse(response.body)
 
-      expect(body['infected']).to eq 1
-      expect(body['percent']).to eq 100.0
-      expect(body['points_lost']).to eq survivor.points
+      expect(body['infected']).to eql 1
+      expect(body['percent']).to eql 100.0
+      expect(body['points_lost']).to eql survivor.points
     end
   end
 
@@ -40,15 +40,15 @@ RSpec.describe ReportsController, type: :controller do
 
       body = JSON.parse(response.body)
       expect(body).not_to be_empty
-      expect(body.length).to eq(3)
+      expect(body.length).to eql(3)
     end
 
     it 'responds correct payload' do
       body = JSON.parse(response.body)
 
-      expect(body['non_infected']).to eq 1
-      expect(body['percent']).to eq 100.0
-      expect(body['avg_resource_by_survivor']).to eq(
+      expect(body['non_infected']).to eql 1
+      expect(body['percent']).to eql 100.0
+      expect(body['avg_resource_by_survivor']).to eql(
         'water' => "#{water.resource_amount}.0",
         'food' => "#{food.resource_amount}.0",
         'medication' => "#{medication.resource_amount}.0",
