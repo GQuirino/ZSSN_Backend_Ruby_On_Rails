@@ -37,7 +37,6 @@ class SurvivorsController < ApplicationController
     else
       raise InternalError, @survivor.errors || 'update method'
     end
-
   end
 
   private

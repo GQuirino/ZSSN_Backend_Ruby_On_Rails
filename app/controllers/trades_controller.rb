@@ -16,15 +16,6 @@ class TradesController < ApplicationController
       inventory: params[:inventory_request]
     }
 
-    resp = TradeService.trade(offer, request)
-
-    render json: resp, status: :ok
-  end
-
-  def trade_params
-    params.require(:trade).permit(
-      :inventory_offer,
-      :inventory_request
-    )
+    render json: TradeService.trade(offer, request), status: :ok
   end
 end
