@@ -1,34 +1,36 @@
 require 'rails_helper'
 
 RSpec.describe ReportService do
-  let(:survivor1) { create(:survivor, flag_as_infected: 0) }
-  let!(:water) { create(:inventory, :water, resource_amount: 1, survivor: survivor1) }
-  let!(:food) { create(:inventory, :food, resource_amount: 2, survivor: survivor1) }
-  let!(:medication) { create(:inventory, :medication, resource_amount: 3, survivor: survivor1) }
-  let!(:ammunition) { create(:inventory, :ammunition, resource_amount: 4, survivor: survivor1) }
-  let!(:survivor2) { create(:survivor, flag_as_infected: 3, points: 30) }
+  let(:survivor) { create(:survivor, flag_as_infected: 0) }
+  before do
+    create(:inventory, :water, resource_amount: 1, survivor: survivor)
+    create(:inventory, :food, resource_amount: 2, survivor: survivor)
+    create(:inventory, :medication, resource_amount: 3, survivor: survivor)
+    create(:inventory, :ammunition, resource_amount: 4, survivor: survivor)
+    create(:survivor, flag_as_infected: 3, points: 30)
+  end
 
-  context 'survivor non-infected' do
-    it 'generate report of non-infected' do
-      report = ReportService.generate_report_non_infected
-      expect(report[:non_infected]).to eql 1
-      expect(report[:percent]).to eql 50.0
-      expect(report[:avg_resource_by_survivor]).to eql(
+  describe '.generate_report_non_infected' do
+    expected_return = {
+      non_infected: 1,
+      percent: 50.0,
+      avg_resource_by_survivor: {
         water: 1.0,
         food: 2.0,
         medication: 3.0,
         amunition: 4.0
-      )
-    end
+      }
+    }
+    it { expect(ReportService.generate_report_non_infected).to eql expected_return }
   end
 
-  context 'survivor infected' do
-    it 'generate report of infected survivors' do
-      report = ReportService.generate_report_infected
-      expect(report[:infected]).to eql 1
-      expect(report[:percent]).to eql 50.0
-      expect(report[:points_lost]).to eql survivor2.points
-    end
+  describe '.generate_report_infected' do
+    expected_return = {
+      infected: 1,
+      percent: 50.0,
+      points_lost: 30
+    }
+    it { expect(ReportService.generate_report_infected).to eql expected_return }
   end
 
   describe '.generate_percentage' do

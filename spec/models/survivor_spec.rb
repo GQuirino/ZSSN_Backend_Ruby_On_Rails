@@ -17,11 +17,11 @@ RSpec.describe Survivor, type: :model do
   it { is_expected.to accept_nested_attributes_for(:inventories) }
 
   describe '.infected?' do
-    context 'When survivor is infected' do
+    context 'when survivor is infected' do
       it { expect(survivor_infected.infected?).to eql(true) }
     end
 
-    context 'When survivor is not infected' do
+    context 'when survivor is not infected' do
       it { expect(survivor.infected?).to eql(false) }
     end
   end

@@ -18,7 +18,7 @@ RSpec.describe TradeService do
   let(:request) { { id_survivor: survivor_request.id } }
 
   describe '.trade' do
-    context 'Price table not respected' do
+    context 'when price table is not respected' do
       it 'raise TradeInvalidError' do
         offer[:inventory] = { 'ammunition' => 1 }
         request[:inventory] = { 'water' => 1 }
@@ -26,7 +26,7 @@ RSpec.describe TradeService do
       end
     end
 
-    context 'survivor without resources' do
+    context 'when survivor doesnt have enough resources' do
       it 'raise TradeInvalidError' do
         offer[:inventory] = { 'ammunition' => 8 }
         request[:inventory] = { 'water' => 2 }
@@ -34,7 +34,7 @@ RSpec.describe TradeService do
       end
     end
 
-    context 'survivor trade items' do
+    context 'when survivor has resources and trade obey price table' do
       new_offer_ammunition = 0
       new_offer_water = 0
       new_request_ammunition = 0
