@@ -19,23 +19,19 @@ RSpec.describe TradeService do
 
   describe '.trade' do
     context 'Price table not respected' do
-      it {
+      it 'raise TradeInvalidError' do
         offer[:inventory] = { 'ammunition' => 1 }
         request[:inventory] = { 'water' => 1 }
-        expect {
-          TradeService.trade(offer, request)
-        }.to raise_error(TradeInvalidError)
-      }
+        expect { TradeService.trade(offer, request) }.to raise_error(TradeInvalidError)
+      end
     end
 
     context 'survivor without resources' do
-      it {
+      it 'raise TradeInvalidError' do
         offer[:inventory] = { 'ammunition' => 8 }
         request[:inventory] = { 'water' => 2 }
-        expect {
-          TradeService.trade(offer, request)
-        }.to raise_error(TradeInvalidError)
-      }
+        expect { TradeService.trade(offer, request) }.to raise_error(TradeInvalidError)
+      end
     end
 
     context 'survivor trade items' do
@@ -65,13 +61,13 @@ RSpec.describe TradeService do
         new_request_water = ammount_resource(trade[:to], 'water')
       end
 
-      it {
+      it 'exchange resources' do
         expect(new_offer_ammunition).to eql ammunition_offer.resource_amount - AMMUNITION
         expect(new_offer_water).to eq water_offer.resource_amount + WATER
 
         expect(new_request_ammunition).to eql ammunition_request.resource_amount + AMMUNITION
         expect(new_request_water).to eq water_request.resource_amount - WATER
-      }
+      end
     end
   end
 end
