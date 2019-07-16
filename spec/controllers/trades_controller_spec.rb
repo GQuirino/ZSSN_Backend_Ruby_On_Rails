@@ -23,10 +23,8 @@ RSpec.describe TradesController, type: :controller do
       put :update, params: {
         id_survivor_from: id_from,
         id_survivor_to: survivor2.id,
-        survivor: {
-          inventory_offer: { ammunition: 4 },
-          inventory_request: { water: 1 }
-        }
+        inventory_offer: { ammunition: 4 },
+        inventory_request: { water: 1 }
       }
 
       expect(response).to have_http_status(:not_found)
@@ -34,18 +32,16 @@ RSpec.describe TradesController, type: :controller do
       body = JSON.parse(response.body)
       expect(body).not_to be_empty
       expect(body.length).to eql 4
-      expect(body['details']).to eql 'Survivor not found'
-      expect(body['source']['survivor']).to eql id_from
+      expect(body['details']).to eql 'Resource not found'
+      expect(body['source']).to eql "Couldn't find Survivor with 'id'=#{id_from}"
     end
 
     it 'returns error survivor infected' do
       put :update, params: {
         id_survivor_from: survivor3.id,
         id_survivor_to: survivor2.id,
-        survivor: {
-          inventory_offer: { ammunition: 4 },
-          inventory_request: { water: 1 }
-        }
+        inventory_offer: { ammunition: 4 },
+        inventory_request: { water: 1 }
       }
 
       expect(response).to have_http_status(:bad_request)

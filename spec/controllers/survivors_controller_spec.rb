@@ -39,9 +39,7 @@ RSpec.describe SurvivorsController, type: :controller do
       expect(body).not_to be_empty
       expect(body['status_code']).to eql(404)
       expect(body['title']).to eql('NOT FOUND')
-      expect(body['source']).to eql(
-        'survivor' => id
-      )
+      expect(body['source']).to eql("Couldn't find Survivor with 'id'=#{id}")
     end
   end
 
@@ -85,9 +83,7 @@ RSpec.describe SurvivorsController, type: :controller do
       expect(body).not_to be_empty
       expect(body['status_code']).to eql(404)
       expect(body['title']).to eql('NOT FOUND')
-      expect(body['source']).to eql(
-        'survivor' => id
-      )
+      expect(body['source']).to eql( "Couldn't find Survivor with 'id'=#{id}")
     end
   end
 
