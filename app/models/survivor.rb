@@ -1,4 +1,3 @@
-require './lib/exceptions/survivor_infected_error'
 class Survivor < ApplicationRecord
   INFECTION_RATE = 3
   has_many :inventories, dependent: :destroy

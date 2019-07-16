@@ -1,4 +1,3 @@
-require './lib/exceptions/trade_invalid_error'
 module TradeService
   class << self
     def trade(offer, request)

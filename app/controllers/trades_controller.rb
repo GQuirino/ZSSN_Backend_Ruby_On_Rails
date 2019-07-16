@@ -1,21 +1,26 @@
-require './lib/exceptions/survivor_infected_error'
-require './lib/exceptions/trade_invalid_error'
-
 class TradesController < ApplicationController
   include Errors
   rescue_from SurvivorInfectedError, with: :render_survivor_infected
   rescue_from TradeInvalidError, with: :render_trade_invalid
+  rescue_from ActiveRecord::RecordNotFound, with: :render_resource_not_found
 
   def update
-    offer = {
-      id_survivor: params[:id_survivor_from],
-      inventory: params[:inventory_offer]
-    }
-    request = {
-      id_survivor: params[:id_survivor_to],
-      inventory: params[:inventory_request]
-    }
+    render json: TradeService.trade(offer_params, requester_params), status: :ok
+  end
 
-    render json: TradeService.trade(offer, request), status: :ok
+  private
+
+  def offer_params
+    {
+      id_survivor: params.require(:id_survivor_from),
+      inventory: params.require(:inventory_offer)
+    }
+  end
+
+  def requester_params
+    {
+      id_survivor: params.require(:id_survivor_to),
+      inventory: params.require(:inventory_request)
+    }
   end
 end

@@ -3,6 +3,7 @@ class SurvivorsController < ApplicationController
   before_action :set_survivor, only: %i[show update destroy]
 
   rescue_from SurvivorInfectedError, with: :render_survivor_infected
+  rescue_from ActiveRecord::RecordNotFound, with: :render_resource_not_found
 
   # GET /survivors
   def index
@@ -24,7 +25,7 @@ class SurvivorsController < ApplicationController
     if @survivor.save
       render json: @survivor.to_json(methods: [:inventories]), status: :created
     else
-      raise InternalError, @survivor.errors || 'create method'
+      render json: @survivor.errors.messages, status: :internal_error
     end
   end
 
@@ -35,7 +36,7 @@ class SurvivorsController < ApplicationController
     if @survivor.update(survivor_edit_params)
       render json: @survivor, status: :ok
     else
-      raise InternalError, @survivor.errors || 'update method'
+      render json: @survivor.errors.messages, status: :internal_error
     end
   end
 
