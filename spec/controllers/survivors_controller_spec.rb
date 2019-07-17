@@ -83,12 +83,11 @@ RSpec.describe SurvivorsController, type: :controller do
       expect(body).not_to be_empty
       expect(body['status_code']).to eql(404)
       expect(body['title']).to eql('NOT FOUND')
-      expect(body['source']).to eql( "Couldn't find Survivor with 'id'=#{id}")
+      expect(body['source']).to eql("Couldn't find Survivor with 'id'=#{id}")
     end
   end
 
   describe 'POST #create' do
-
     def resource_created?(inventory, type)
       inventory.any? do |hash|
         hash['resource_type'] == type[:resource_type] &&
@@ -139,19 +138,21 @@ RSpec.describe SurvivorsController, type: :controller do
 
       expect(response).to have_http_status(:created)
 
+      expected_body = {
+        'name' => params[:name],
+        'gender' => params[:gender],
+        'age' => params[:age],
+        'flag_as_infected' => 0,
+        'points' => 20,
+        'latitude' => params[:latitude].to_s,
+        'longitude' => params[:longitude].to_s,
+        'created_at' => '2019-10-01T13:05:00.000Z',
+        'updated_at' => '2019-10-01T13:05:00.000Z'
+      }
       body = JSON.parse(response.body)
       expect(body).not_to be_empty
       expect(body.length).to eql 11
-      expect(body['inventories'].length).to eql 4
-      expect(body['name']).to eql params[:name]
-      expect(body['gender']).to eql params[:gender]
-      expect(body['age']).to eql params[:age]
-      expect(body['flag_as_infected']).to eql 0
-      expect(body['points']).to eql 20
-      expect(body['latitude']).to eql params[:latitude].to_s
-      expect(body['longitude']).to eql params[:longitude].to_s
-      expect(body['created_at']).to eql '2019-10-01T13:05:00.000Z'
-      expect(body['updated_at']).to eql '2019-10-01T13:05:00.000Z'
+      expect(body.except('inventories', 'id')).to eql expected_body
       expect(resource_created?(body['inventories'], water)).to eql(true)
       expect(resource_created?(body['inventories'], food)).to eql(true)
       expect(resource_created?(body['inventories'], medication)).to eql(true)
