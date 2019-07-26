@@ -1,14 +1,20 @@
 class TradesController < ApplicationController
-  include Errors
-  rescue_from SurvivorInfectedError, with: :render_survivor_infected
-  rescue_from TradeInvalidError, with: :render_trade_invalid
-  rescue_from ActiveRecord::RecordNotFound, with: :render_resource_not_found
+  rescue_from ActiveRecord::RecordNotFound do |exception|
+    error = Errors.render_resource_not_found(exception)
+    render json: error, status: error[:status_code]
+  end
 
   def update
-    render json: TradeService.trade(offer_params, requester_params), status: :ok
+    resp = TradeService.trade(offer_params, requester_params)
+
+    render json: resp, status: resp[:status_code] || :ok
   end
 
   private
+
+  def find_survivor(id)
+    Survivor.find(id)
+  end
 
   def offer_params
     {

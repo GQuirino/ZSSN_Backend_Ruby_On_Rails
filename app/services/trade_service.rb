@@ -1,22 +1,33 @@
 module TradeService
   class << self
     def trade(offer, request)
+      @survivor_offer = Survivor.find(offer[:id_survivor])
+      @survivor_request = Survivor.find(request[:id_survivor])
+
+      validation = validate_trade(offer, request)
+      return validation unless validation.nil?
+
       Inventory.transaction do
         {
-          from: trade_items(offer[:id_survivor], offer[:inventory], request[:inventory]),
-          to: trade_items(request[:id_survivor], request[:inventory], offer[:inventory])
+          from: trade_items(@survivor_offer, offer[:inventory], request[:inventory]),
+          to: trade_items(@survivor_request, request[:inventory], offer[:inventory])
         }
       end
     end
 
     private
 
-    def trade_items(id_survivor, items_to_remove, items_to_add)
-      survivor = Survivor.find(id_survivor)
-      raise SurvivorInfectedError, survivor.id if survivor.infected?
+    def validate_trade(offer, request)
+      return Errors.render_survivor_infected(@survivor_offer.id) if @survivor_offer.infected?
+      return Errors.render_survivor_infected(@survivor_request.id) if @survivor_request.infected?
 
-      enough_resources?(survivor, items_to_remove)
-      respect_price_table?(items_to_remove, items_to_add)
+      return Errors.render_trade_invalid('Trade not respect table of prices') unless respect_price_table?(offer[:inventory], request[:inventory])
+
+      return Errors.render_trade_invalid("Survivor #{@survivor_offer[:id]} doesn't have enough resources") unless enough_resources?(@survivor_offer,  offer[:inventory])
+      return Errors.render_trade_invalid("Survivor #{@survivor_request[:id]} doesn't have enough resources") unless enough_resources?(@survivor_request,  request[:inventory])
+    end
+
+    def trade_items(survivor, items_to_remove, items_to_add)
       exchange_items(items_to_remove, items_to_add, survivor)
       survivor.as_json(methods: [:inventories])
     end
@@ -43,20 +54,18 @@ module TradeService
     end
 
     def enough_resources?(survivor, items_to_trade)
-      reason = "Survivor #{survivor[:id]} doesn't have enough resources"
       items_to_trade.each do |key, val|
         resource = survivor.inventories.find do |r|
           r[:resource_type] == key
         end
-        raise TradeInvalidError, reason if resource['resource_amount'] < val.to_i
+        return resource['resource_amount'] >= val.to_i
       end
     end
 
     def respect_price_table?(resources_offer, resources_request)
-      reason = 'Trade not respect table of prices'
       points_offer = InventoryService.generate_points(resources_offer)
       points_request = InventoryService.generate_points(resources_request)
-      raise TradeInvalidError, reason unless points_offer == points_request
+      points_offer == points_request
     end
   end
 end

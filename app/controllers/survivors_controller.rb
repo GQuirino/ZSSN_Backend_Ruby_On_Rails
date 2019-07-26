@@ -1,9 +1,10 @@
 class SurvivorsController < ApplicationController
-  include Errors
-  before_action :set_survivor, only: %i[show update destroy]
+  before_action :set_survivor, only: %i[show update]
 
-  rescue_from SurvivorInfectedError, with: :render_survivor_infected
-  rescue_from ActiveRecord::RecordNotFound, with: :render_resource_not_found
+  rescue_from ActiveRecord::RecordNotFound do |exception|
+    error = Errors.render_resource_not_found(exception)
+    render json: error, status: error[:status_code]
+  end
 
   # GET /survivors
   def index
@@ -31,7 +32,10 @@ class SurvivorsController < ApplicationController
 
   # PATCH/PUT /survivors/1
   def update
-    raise SurvivorInfectedError, @survivor.id if @survivor.infected?
+    if @survivor.infected?
+      error = Errors.render_survivor_infected(@survivor.id)
+      return render json: error, status: error[:status_code]
+    end
 
     if @survivor.update(survivor_edit_params)
       render json: @survivor, status: :ok

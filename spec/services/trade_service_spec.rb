@@ -19,18 +19,30 @@ RSpec.describe TradeService do
 
   describe '.trade' do
     context 'when price table is not respected' do
-      it 'raise TradeInvalidError' do
+      it 'return Invalid Trade Error' do
         offer[:inventory] = { 'ammunition' => 1 }
         request[:inventory] = { 'water' => 1 }
-        expect { TradeService.trade(offer, request) }.to raise_error(TradeInvalidError)
+        expected_response = {
+          details: 'Invalid Trade',
+          source: { reason: 'Trade not respect table of prices' },
+          status_code: 403,
+          title: 'INVALID TRADE'
+        }
+        expect(TradeService.trade(offer, request)).to eql(expected_response)
       end
     end
 
     context 'when survivor doesnt have enough resources' do
-      it 'raise TradeInvalidError' do
+      it 'return Invalid Trade Error' do
         offer[:inventory] = { 'ammunition' => 8 }
         request[:inventory] = { 'water' => 2 }
-        expect { TradeService.trade(offer, request) }.to raise_error(TradeInvalidError)
+        expected_response = {
+          details: 'Invalid Trade',
+          source: { reason: "Survivor #{offer[:id_survivor]} doesn't have enough resources" },
+          status_code: 403,
+          title: 'INVALID TRADE'
+        }
+        expect(TradeService.trade(offer, request)).to eql(expected_response)
       end
     end
 

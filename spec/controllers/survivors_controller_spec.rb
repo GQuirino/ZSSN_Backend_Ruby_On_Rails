@@ -49,10 +49,8 @@ RSpec.describe SurvivorsController, type: :controller do
       longitude = '888.444'
       put :update, params: {
         id: survivor.id,
-        survivor: {
-          latitude: latitude,
-          longitude: longitude
-        }
+        latitude: latitude,
+        longitude: longitude
       }
 
       expect(response).to have_http_status(:ok)
