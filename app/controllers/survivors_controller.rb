@@ -55,8 +55,10 @@ class SurvivorsController < ApplicationController
   end
 
   def survivor_edit_params
-    params.require(:survivor).permit(
-      :latitude, :longitude
-    )
+    {
+      latitude: params.require(:latitude),
+      longitude: params.require(:longitude),
+      id: params.require(:id)
+    }
   end
 end
