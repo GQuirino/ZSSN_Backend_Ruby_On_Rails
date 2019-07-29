@@ -1,6 +1,6 @@
 class InfectionsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound do |exception|
-    error = Errors.render_resource_not_found(exception)
+    error = Errors.resource_not_found(exception)
     render json: error, status: error[:status_code]
   end
 
@@ -8,7 +8,7 @@ class InfectionsController < ApplicationController
     @survivor = Survivor.find(params[:id])
 
     if @survivor.infected?
-      error = Errors.render_survivor_infected(@survivor.id)
+      error = Errors.survivor_infected(@survivor.id)
       return render json: error, status: error[:status_code]
     end
 

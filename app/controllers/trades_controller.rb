@@ -1,6 +1,6 @@
 class TradesController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound do |exception|
-    error = Errors.render_resource_not_found(exception)
+    error = Errors.resource_not_found(exception)
     render json: error, status: error[:status_code]
   end
 

@@ -18,13 +18,13 @@ module TradeService
     private
 
     def validate_trade(offer, request)
-      return Errors.render_survivor_infected(@survivor_offer.id) if @survivor_offer.infected?
-      return Errors.render_survivor_infected(@survivor_request.id) if @survivor_request.infected?
+      return Errors.survivor_infected(@survivor_offer.id) if @survivor_offer.infected?
+      return Errors.survivor_infected(@survivor_request.id) if @survivor_request.infected?
 
-      return Errors.render_trade_invalid('Trade not respect table of prices') unless respect_price_table?(offer[:inventory], request[:inventory])
+      return Errors.trade_invalid('Trade not respect table of prices') unless respect_price_table?(offer[:inventory], request[:inventory])
 
-      return Errors.render_trade_invalid("Survivor #{@survivor_offer[:id]} doesn't have enough resources") unless enough_resources?(@survivor_offer,  offer[:inventory])
-      return Errors.render_trade_invalid("Survivor #{@survivor_request[:id]} doesn't have enough resources") unless enough_resources?(@survivor_request,  request[:inventory])
+      return Errors.trade_invalid("Survivor #{@survivor_offer[:id]} doesn't have enough resources") unless enough_resources?(@survivor_offer,  offer[:inventory])
+      return Errors.trade_invalid("Survivor #{@survivor_request[:id]} doesn't have enough resources") unless enough_resources?(@survivor_request,  request[:inventory])
     end
 
     def trade_items(survivor, items_to_remove, items_to_add)

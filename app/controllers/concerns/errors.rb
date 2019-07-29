@@ -1,26 +1,28 @@
 module Errors
-  def self.render_missing_data(exception)
-    error = ERRORS[:MISSING_DATA]
-    error[:source] = exception
-    error
-  end
+  class << self
+    def missing_data(exception)
+      error = ERRORS[:MISSING_DATA]
+      error[:source] = exception
+      error
+    end
 
-  def self.render_resource_not_found(exception)
-    error = ERRORS[:NOT_FOUND]
-    error[:source] = exception
-    error
-  end
+    def resource_not_found(exception)
+      error = ERRORS[:NOT_FOUND]
+      error[:source] = exception
+      error
+    end
 
-  def self.render_survivor_infected(id)
-    error = ERRORS[:SURVIVOR_INFECTED]
-    error[:source] = { survivor: id }
-    error
-  end
+    def survivor_infected(id)
+      error = ERRORS[:SURVIVOR_INFECTED]
+      error[:source] = { survivor: id }
+      error
+    end
 
-  def self.render_trade_invalid(exception)
-    error = ERRORS[:INVALID_TRADE]
-    error[:source] = { reason: exception }
-    error
+    def trade_invalid(exception)
+      error = ERRORS[:INVALID_TRADE]
+      error[:source] = { reason: exception }
+      error
+    end
   end
 
   ERRORS = {

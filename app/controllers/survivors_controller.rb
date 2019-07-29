@@ -2,7 +2,7 @@ class SurvivorsController < ApplicationController
   before_action :set_survivor, only: %i[show update]
 
   rescue_from ActiveRecord::RecordNotFound do |exception|
-    error = Errors.render_resource_not_found(exception)
+    error = Errors.resource_not_found(exception)
     render json: error, status: error[:status_code]
   end
 
@@ -33,7 +33,7 @@ class SurvivorsController < ApplicationController
   # PATCH/PUT /survivors/1
   def update
     if @survivor.infected?
-      error = Errors.render_survivor_infected(@survivor.id)
+      error = Errors.survivor_infected(@survivor.id)
       return render json: error, status: error[:status_code]
     end
 
