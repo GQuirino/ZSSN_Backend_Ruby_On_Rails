@@ -1,29 +1,23 @@
 module Errors
-  class << self
-    def missing_data(exception)
-      error = ERRORS[:MISSING_DATA]
-      error[:source] = exception
-      error
-    end
-
-    def resource_not_found(exception)
-      error = ERRORS[:NOT_FOUND]
-      error[:source] = exception
-      error
-    end
-
-    def survivor_infected(id)
-      error = ERRORS[:SURVIVOR_INFECTED]
-      error[:source] = { survivor: id }
-      error
-    end
-
-    def trade_invalid(exception)
-      error = ERRORS[:INVALID_TRADE]
-      error[:source] = { reason: exception }
-      error
-    end
+  def resource_not_found(exception)
+    error = ERRORS[:NOT_FOUND]
+    error[:source] = exception
+    error
   end
+
+  def survivor_infected(id)
+    error = ERRORS[:SURVIVOR_INFECTED]
+    error[:source] = { survivor: id }
+    error
+  end
+
+  def trade_invalid(exception)
+    error = ERRORS[:INVALID_TRADE]
+    error[:source] = { reason: exception }
+    error
+  end
+
+  module_function :resource_not_found, :survivor_infected, :trade_invalid
 
   ERRORS = {
     NOT_FOUND: {
@@ -34,11 +28,6 @@ module Errors
     INTERNAL: {
       status_code: 500,
       title: 'INTERNAL ERROR'
-    },
-    MISSING_DATA: {
-      status_code: 422,
-      details: 'Missing Data',
-      title: 'MISSING DATA'
     },
     INVALID_TRADE: {
       status_code: 403,
