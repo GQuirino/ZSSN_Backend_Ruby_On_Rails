@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  username: 'zssn-user'
+  password: 123456
+
+development:
+  <<: *default
+  database: ZSSN_Backend_Ruby_On_Rails_development
+
+test:
+  <<: *default
+  database: ZSSN_Backend_Ruby_On_Rails_test
+
+production:
+  <<: *default
+  database: ZSSN_Backend_Ruby_On_Rails_production
