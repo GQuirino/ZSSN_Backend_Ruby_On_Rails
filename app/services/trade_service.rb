@@ -17,13 +17,11 @@ module TradeService
   module_function :trade
 
   def self.validation(offer, request)
-    return Errors.survivor_infected(@survivor_offer.id) if @survivor_offer.infected?
-    return Errors.survivor_infected(@survivor_request.id) if @survivor_request.infected?
-
     validation = TradeValidator.validate_trade({ survivor: @survivor_offer,
-                                                  resources: offer[:inventory] },
-                                                { survivor: @survivor_request,
-                                                  resources: request[:inventory] })
+                                                 resources: offer[:inventory] },
+                                               { survivor: @survivor_request,
+                                                 resources: request[:inventory] })
+
     return Errors.trade_invalid(validation.errors) unless validation.errors?
   end
 

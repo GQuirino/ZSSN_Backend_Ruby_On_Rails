@@ -16,16 +16,6 @@ RSpec.describe Survivor, type: :model do
   it { is_expected.to validate_presence_of(:longitude) }
   it { is_expected.to accept_nested_attributes_for(:inventories) }
 
-  describe '.infected?' do
-    context 'when survivor is infected' do
-      it { expect(survivor_infected.infected?).to eql(true) }
-    end
-
-    context 'when survivor is not infected' do
-      it { expect(survivor.infected?).to eql(false) }
-    end
-  end
-
   describe 'initializers' do
     before do
       survivor.initialize_points

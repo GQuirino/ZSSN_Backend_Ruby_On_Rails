@@ -6,6 +6,14 @@ module TradeValidator
   end
 
   def validate_trade(offer, request)
+    if offer[:survivor].flag_as_infected >= 3
+      return Result.new("Survivor #{offer[:survivor][:id]} is infected")
+    end
+
+    if request[:survivor].flag_as_infected >= 3
+      return Result.new("Survivor #{request[:survivor][:id]} is infected")
+    end
+
     unless respect_price_table?(offer[:resources], request[:resources])
       return Result.new('Trade not respect table of prices')
     end

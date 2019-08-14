@@ -32,14 +32,14 @@ class SurvivorsController < ApplicationController
 
   # PATCH/PUT /survivors/1
   def update
-    if @survivor.infected?
-      error = Errors.survivor_infected(@survivor.id)
-      return render json: error, status: error[:status_code]
-    end
-
     if @survivor.update(survivor_edit_params)
       render json: @survivor, status: :ok
     else
+      if @survivor.errors.key?('infected')
+        err = @survivor.errors.messages[:infected][0]
+        return render json: err, status: err[:status_code]
+      end
+
       render json: @survivor.errors.messages, status: :internal_error
     end
   end
