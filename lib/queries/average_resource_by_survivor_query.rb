@@ -5,9 +5,9 @@ module AverageResourceBySurvivorQuery
       .average(:resource_amount)
   end
 
-  private
+  module_function :avg_resource
 
-  def resources_from_all_non_infected
+  def self.resources_from_all_non_infected
     Inventory.select(:resource_type, :resource_amount)
       .joins(:survivor)
       .merge(Survivor.non_infected)
