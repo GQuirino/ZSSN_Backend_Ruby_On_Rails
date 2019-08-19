@@ -14,10 +14,6 @@ class Survivor < ApplicationRecord
             :longitude,
             presence: true
 
-  def increment_infection!
-    self.flag_as_infected += 1
-  end
-
   def infected?
     self.flag_as_infected >= INFECTION_RATE
   end

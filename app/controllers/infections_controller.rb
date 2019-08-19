@@ -6,7 +6,7 @@ class InfectionsController < ApplicationController
 
   def update
     @survivor = Survivor.find(params[:id])
-    if @survivor.update(flag_as_infected: @survivor.increment_infection!)
+    if @survivor.update(flag_as_infected: SurvivorService.increment_infection(@survivor))
       render json: @survivor, status: :ok
     else
       if @survivor.errors.key?('infected')
