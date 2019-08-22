@@ -25,14 +25,4 @@ RSpec.describe Survivor, type: :model do
       it { expect(survivor.infected?).to eql(false) }
     end
   end
-
-  describe 'initializers' do
-    before do
-      survivor.initialize_points
-      survivor.initialize_infection
-    end
-
-    it { expect(survivor.points).to eql 20 }
-    it { expect(survivor.flag_as_infected).to eql 0 }
-  end
 end
