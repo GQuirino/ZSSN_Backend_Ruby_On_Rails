@@ -21,7 +21,9 @@ ActiveRecord::Schema.define(version: 2019_08_15_132457) do
     t.integer "resource_amount", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["resource_type"], name: "index_inventories_on_resource_type"
     t.index ["survivor_id"], name: "index_inventories_on_survivor_id"
+    t.index ["survivor_id"], name: "newindex"
   end
 
   create_table "survivors", force: :cascade do |t|
