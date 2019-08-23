@@ -1,29 +1,20 @@
 module TradeService
   def trade(offer, request)
-    @survivor_offer = Survivor.find(offer[:id_survivor])
-    @survivor_request = Survivor.find(request[:id_survivor])
+    validation = TradeValidator.validate_trade(offer, request)
+    return Errors.trade_invalid(validation.errors) unless validation.errors?
 
-    validation = validation(offer, request)
-    return validation unless validation.nil?
+    survivor_offer = offer[:survivor]
+    survivor_request = request[:survivor]
 
     Inventory.transaction do
       {
-        from: trade_items(@survivor_offer, offer[:inventory], request[:inventory]),
-        to: trade_items(@survivor_request, request[:inventory], offer[:inventory])
+        from: trade_items(survivor_offer, offer[:resources], request[:resources]),
+        to: trade_items(survivor_request, request[:resources], offer[:resources])
       }
     end
   end
 
   module_function :trade
-
-  def self.validation(offer, request)
-    validation = TradeValidator.validate_trade({ survivor: @survivor_offer,
-                                                 resources: offer[:inventory] },
-                                               { survivor: @survivor_request,
-                                                 resources: request[:inventory] })
-
-    return Errors.trade_invalid(validation.errors) unless validation.errors?
-  end
 
   def self.trade_items(survivor, items_to_remove, items_to_add)
     exchange_items(items_to_remove, items_to_add, survivor)
@@ -41,7 +32,7 @@ module TradeService
   def self.update_inventory(items, survivor, func)
     inventories = survivor.inventories
     items.each do |key, val|
-      idx = inventories.index { |i| i[:resource_type] == key }
+      idx = inventories.index { |i| i[:resource_type] == key.to_s }
       resource = inventories[idx]
       func.call(resource, val)
       Inventory.update(

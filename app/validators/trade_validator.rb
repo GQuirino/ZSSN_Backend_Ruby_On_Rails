@@ -5,7 +5,7 @@ module TradeValidator
     end
   end
 
-  def validate_trade(offer, request)
+  def validate_trade(offer, request)    
     if offer[:survivor].flag_as_infected >= 3
       return Result.new("Survivor #{offer[:survivor][:id]} is infected")
     end
@@ -38,7 +38,7 @@ module TradeValidator
   def self.enough_resources?(survivor, items_to_trade)
     items_to_trade.each do |key, val|
       resource = survivor.inventories.find do |r|
-        r[:resource_type] == key
+        r[:resource_type] == key.to_s
       end
       return resource['resource_amount'] >= val.to_i
     end

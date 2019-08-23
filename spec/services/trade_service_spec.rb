@@ -14,14 +14,14 @@ RSpec.describe TradeService do
   let!(:medication_request) { create(:inventory, :medication, resource_amount: 3, survivor: survivor_request) }
   let!(:ammunition_request) { create(:inventory, :ammunition, resource_amount: 4, survivor: survivor_request) }
 
-  let(:offer) { { id_survivor: survivor_offer.id } }
-  let(:request) { { id_survivor: survivor_request.id } }
+  let(:offer) { { survivor: survivor_offer } }
+  let(:request) { { survivor: survivor_request } }
 
   describe '.trade' do
     context 'when price table is not respected' do
       it 'return Invalid Trade Error' do
-        offer[:inventory] = { 'ammunition' => 1 }
-        request[:inventory] = { 'water' => 1 }
+        offer[:resources] = { ammunition: 1 }
+        request[:resources] = { water: 1 }
         expected_response = {
           details: 'Invalid Trade',
           source: { reason: 'Trade not respect table of prices' },
@@ -34,11 +34,11 @@ RSpec.describe TradeService do
 
     context 'when survivor doesnt have enough resources' do
       it 'return Invalid Trade Error' do
-        offer[:inventory] = { 'ammunition' => 8 }
-        request[:inventory] = { 'water' => 2 }
+        offer[:resources] = { ammunition: 8 }
+        request[:resources] = { water: 2 }
         expected_response = {
           details: 'Invalid Trade',
-          source: { reason: "Survivor #{offer[:id_survivor]} doesn't have enough resources" },
+          source: { reason: "Survivor #{offer[:survivor][:id]} doesn't have enough resources" },
           status_code: 403,
           title: 'INVALID TRADE'
         }
@@ -62,9 +62,9 @@ RSpec.describe TradeService do
           inventory[idx]['resource_amount']
         end
 
-        offer[:inventory] = { 'ammunition' => AMMUNITION }
-        request[:inventory] = { 'water' => WATER }
-
+        offer[:resources] = { ammunition: AMMUNITION }
+        request[:resources] = { water: WATER }
+        
         trade = TradeService.trade(offer, request)
 
         new_offer_ammunition = ammount_resource(trade[:from], 'ammunition')
