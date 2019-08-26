@@ -39,7 +39,7 @@ class TradeValidator
   private
 
   def infected?(survivor)
-    survivor.flag_as_infected >= 3
+    survivor.flag_as_infected >= Survivor::INFECTION_RATE
   end
 
   def respect_price_table?(resources_offer, resources_request)

@@ -1,6 +1,6 @@
 class SurvivorValidator < ActiveModel::Validator
   def validate(record)
-    if record.flag_as_infected >= 3
+    if record.flag_as_infected >= Survivor::INFECTION_RATE
       err = {
         status_code: 400,
         title: 'SURVIVOR INFECTED',
