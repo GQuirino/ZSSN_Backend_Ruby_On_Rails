@@ -2,8 +2,12 @@ class TradesController < ApplicationController
   before_action :set_survivors, only: :update
 
   rescue_from ActiveRecord::RecordNotFound do |exception|
-    error = Errors.resource_not_found(exception)
-    render json: error, status: error[:status_code]
+    error = {
+      details: 'Resource not found',
+      title: 'NOT FOUND',
+      source: exception
+    }
+    render json: error, status: :not_found
   end
 
   def update
@@ -17,7 +21,7 @@ class TradesController < ApplicationController
       resources: requester_params[:inventory]
     }
 
-    resp = TradeService.trade(offer, request)
+    resp = TradeService.new(offer, request).trade
 
     render json: resp, status: resp[:status_code] || :ok
   end

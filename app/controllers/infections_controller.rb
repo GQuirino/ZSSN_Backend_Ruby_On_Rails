@@ -1,7 +1,11 @@
 class InfectionsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound do |exception|
-    error = Errors.resource_not_found(exception)
-    render json: error, status: error[:status_code]
+    error = {
+      details: 'Resource not found',
+      title: 'NOT FOUND',
+      source: exception
+    }
+    render json: error, status: :not_found
   end
 
   def update

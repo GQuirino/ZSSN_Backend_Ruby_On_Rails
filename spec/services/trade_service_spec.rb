@@ -24,11 +24,11 @@ RSpec.describe TradeService do
         request[:resources] = { water: 1 }
         expected_response = {
           details: 'Invalid Trade',
-          source: { reason: 'Trade not respect table of prices' },
+          source: ['Trade not respect table of prices'],
           status_code: 403,
           title: 'INVALID TRADE'
         }
-        expect(TradeService.trade(offer, request)).to eql(expected_response)
+        expect(TradeService.new(offer, request).trade).to eql(expected_response)
       end
     end
 
@@ -38,11 +38,12 @@ RSpec.describe TradeService do
         request[:resources] = { water: 2 }
         expected_response = {
           details: 'Invalid Trade',
-          source: { reason: "Survivor #{offer[:survivor][:id]} doesn't have enough resources" },
+          source: ["Survivor #{offer[:survivor][:id]} doesn't have enough resources",
+                   "Survivor #{request[:survivor][:id]} doesn't have enough resources"],
           status_code: 403,
           title: 'INVALID TRADE'
         }
-        expect(TradeService.trade(offer, request)).to eql(expected_response)
+        expect(TradeService.new(offer, request).trade).to eql(expected_response)
       end
     end
 
@@ -64,9 +65,8 @@ RSpec.describe TradeService do
 
         offer[:resources] = { ammunition: AMMUNITION }
         request[:resources] = { water: WATER }
-        
-        trade = TradeService.trade(offer, request)
 
+        trade = TradeService.new(offer, request).trade
         new_offer_ammunition = ammount_resource(trade[:from], 'ammunition')
         new_offer_water = ammount_resource(trade[:from], 'water')
         new_request_ammunition = ammount_resource(trade[:to], 'ammunition')
