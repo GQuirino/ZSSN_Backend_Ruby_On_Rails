@@ -26,19 +26,25 @@ class TradeService
   end
 
   def exchange_items(to_remove, to_add, survivor)
-    remove_lambda = ->(resource, val) { resource.resource_amount -= val.to_i }
-    add_lambda = ->(resource, val) { resource.resource_amount += val.to_i }
+    update_inventory(to_remove, survivor) do |amount, val|
+      amount - val.to_i
+    end
 
-    update_inventory(to_remove, survivor, remove_lambda)
-    update_inventory(to_add, survivor, add_lambda)
+    update_inventory(to_add, survivor) do |amount, val|
+      amount + val.to_i
+    end
   end
 
-  def update_inventory(items, survivor, func)
+  def update_inventory(items, survivor)
     inventories = survivor.inventories
     items.each do |key, val|
       idx = inventories.index { |i| i[:resource_type] == key.to_s }
       resource = inventories[idx]
-      func.call(resource, val)
+
+      if block_given?
+        resource.resource_amount = yield resource.resource_amount, val
+      end
+
       Inventory.update(
         resource.id,
         resource_amount: resource.resource_amount
