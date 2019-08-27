@@ -20,14 +20,10 @@ RSpec.describe InfectionsController, type: :controller do
       put :update, params: { id: survivor.id }
       body = JSON.parse(response.body)
       expect(body).not_to be_empty
-      expect(body.length).to eql 4
+      expect(body.length).to eql 2
 
       expect(body['status_code']).to eql 400
-      expect(body['title']).to eql 'SURVIVOR INFECTED'
-      expect(body['details']).to eql 'Survivor is infected'
-      expect(body['source']).to eql(
-        'survivor' => survivor.id
-      )
+      expect(body['errors']).to eql 'infected' => [survivor.id]
     end
   end
 end

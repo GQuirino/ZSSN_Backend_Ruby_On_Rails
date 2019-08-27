@@ -1,15 +1,6 @@
 class SurvivorsController < ApplicationController
   before_action :set_survivor, only: %i[show update]
 
-  rescue_from ActiveRecord::RecordNotFound do |exception|
-    error = {
-      details: 'Resource not found',
-      title: 'NOT FOUND',
-      source: exception
-    }
-    render json: error, status: :not_found
-  end
-
   # GET /survivors
   def index
     @survivors = Survivor.all

@@ -1,39 +1,36 @@
-class TradeValidator
-  attr_accessor :errors
-  def initialize(offer, request)
+module TradeValidator
+  Validation = Struct.new(:validation_error) do
+    def validation_error?
+      !validation_error.empty?
+    end
+  end
+
+  def validate_trade(offer, request)
     infected_msg = ->(id) { "Survivor #{id} is infected" }
     enough_resources_msg = ->(id) { "Survivor #{id} doesn't have enough resources" }
-    err_msg = []
-    @errors = nil
+    messages = []
 
     if infected?(offer[:survivor])
-      err_msg << error_message(offer[:survivor][:id], infected_msg)
+      messages << error_message(offer[:survivor][:id], infected_msg)
     end
 
     if infected?(request[:survivor])
-      err_msg << error_message(request[:survivor][:id], infected_msg)
+      messages << error_message(request[:survivor][:id], infected_msg)
     end
 
     unless respect_price_table?(offer[:resources], request[:resources])
-      err_msg << error_message('Trade not respect table of prices')
+      messages << error_message('Trade not respect table of prices')
     end
 
     unless enough_resources?(offer[:survivor], offer[:resources])
-      err_msg << error_message(offer[:survivor][:id], enough_resources_msg)
+      messages << error_message(offer[:survivor][:id], enough_resources_msg)
     end
 
     unless enough_resources?(request[:survivor], request[:resources])
-      err_msg << error_message(request[:survivor][:id], enough_resources_msg)
+      messages << error_message(request[:survivor][:id], enough_resources_msg)
     end
 
-    unless err_msg.empty?
-      @errors = {
-        status_code: 403,
-        details: 'Invalid Trade',
-        title: 'INVALID TRADE',
-        source: err_msg
-      }
-    end
+    Validation.new(messages)
   end
 
   private

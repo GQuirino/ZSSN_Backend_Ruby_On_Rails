@@ -1,15 +1,15 @@
 class TradeService
   attr_accessor :errors
 
+  include TradeValidator
+
   def initialize(offer, request)
     @offer = offer
     @request = request
-    @errors = nil
+    @errors = validate_trade(@offer, @request)
   end
 
   def trade
-    @errors = TradeValidator.new(@offer, @request).errors
-    return @errors unless @errors.nil?
     Inventory.transaction do
       {
         from: trade_items(@offer[:survivor], @offer[:resources], @request[:resources]),

@@ -29,17 +29,6 @@ RSpec.describe SurvivorsController, type: :controller do
       expect(body).not_to be_empty
       expect(body.length).to eql(11)
     end
-
-    it 'returns an error' do
-      id = '999999'
-      get :show, params: { id: id }
-      expect(response).to have_http_status(404)
-
-      body = JSON.parse(response.body)
-      expect(body).not_to be_empty
-      expect(body['title']).to eql('NOT FOUND')
-      expect(body['source']).to eql("Couldn't find Survivor with 'id'=#{id}")
-    end
   end
 
   describe 'PUT #update' do
@@ -59,27 +48,6 @@ RSpec.describe SurvivorsController, type: :controller do
       expect(body.length).to eql 10
       expect(body['latitude']).to eql latitude
       expect(body['longitude']).to eql longitude
-    end
-
-    it 'returns an error' do
-      latitude = '999.666'
-      longitude = '888.444'
-      id = '999999'
-
-      put :update, params: {
-        id: id,
-        survivor: {
-          latitude: latitude,
-          longitude: longitude
-        }
-      }
-
-      expect(response).to have_http_status(404)
-
-      body = JSON.parse(response.body)
-      expect(body).not_to be_empty
-      expect(body['title']).to eql('NOT FOUND')
-      expect(body['source']).to eql("Couldn't find Survivor with 'id'=#{id}")
     end
   end
 
