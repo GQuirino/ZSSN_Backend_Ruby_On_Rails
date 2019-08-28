@@ -112,8 +112,8 @@ RSpec.describe SurvivorsController, type: :controller do
         'points' => 20,
         'latitude' => params[:latitude].to_s,
         'longitude' => params[:longitude].to_s,
-        'created_at' => '2019-10-01T13:05:00.000Z',
-        'updated_at' => '2019-10-01T13:05:00.000Z'
+        'created_at' => '2019-10-01T10:05:00.000Z',
+        'updated_at' => '2019-10-01T10:05:00.000Z'
       }
 
       body = JSON.parse(response.body)
