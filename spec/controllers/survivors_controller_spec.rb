@@ -52,6 +52,8 @@ RSpec.describe SurvivorsController, type: :controller do
   end
 
   describe 'POST #create' do
+    let(:new_time) { Time.local(2019, 10, 1, 10, 5, 0) } # 2019/10/01 10:05:00
+
     def resource_created?(inventory, type)
       inventory.any? do |hash|
         hash['resource_type'] == type[:resource_type] &&
@@ -60,7 +62,7 @@ RSpec.describe SurvivorsController, type: :controller do
     end
 
     before do
-      Timecop.freeze(Time.local(2019, 10, 1, 10, 5, 0)) # 2019/10/01 13:05:00
+      Timecop.freeze(new_time)
     end
 
     after do
@@ -110,8 +112,8 @@ RSpec.describe SurvivorsController, type: :controller do
         'points' => 20,
         'latitude' => params[:latitude].to_s,
         'longitude' => params[:longitude].to_s,
-        'created_at' => '2019-10-01T13:05:00.000Z',
-        'updated_at' => '2019-10-01T13:05:00.000Z'
+        'created_at' => new_time.to_datetime.to_s,
+        'updated_at' => new_time.to_datetime.to_s
       }
       body = JSON.parse(response.body)
       expect(body).not_to be_empty
