@@ -21,10 +21,10 @@ class Report
       total = Survivor.count
       percent = generate_percentage(count_survivors, total)
       resource_by_survivor = {
-        water: AverageResourceBySurvivorQuery.avg_resource('water'),
-        food: AverageResourceBySurvivorQuery.avg_resource('food'),
-        medication: AverageResourceBySurvivorQuery.avg_resource('medication'),
-        amunition: AverageResourceBySurvivorQuery.avg_resource('ammunition')
+        water:  Queries::AverageResourceBySurvivor.avg_resource('water'),
+        food: Queries::AverageResourceBySurvivor.avg_resource('food'),
+        medication: Queries::AverageResourceBySurvivor.avg_resource('medication'),
+        amunition: Queries::AverageResourceBySurvivor.avg_resource('ammunition')
       }
       {
         non_infected: count_survivors,

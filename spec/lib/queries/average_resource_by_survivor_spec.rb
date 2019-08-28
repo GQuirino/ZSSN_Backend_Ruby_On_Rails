@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe AverageResourceBySurvivorQuery do
+RSpec.describe Queries::AverageResourceBySurvivor do
   let(:survivor1) { create(:survivor, flag_as_infected: 0) }
   let(:survivor2) { create(:survivor, flag_as_infected: 0) }
 
@@ -17,9 +17,9 @@ RSpec.describe AverageResourceBySurvivorQuery do
   end
 
   describe '.avg_resource' do
-    it { expect(AverageResourceBySurvivorQuery.avg_resource('water')).to eql 2.50 }
-    it { expect(AverageResourceBySurvivorQuery.avg_resource('food')).to eql 2.50 }
-    it { expect(AverageResourceBySurvivorQuery.avg_resource('medication')).to eql 2.50 }
-    it { expect(AverageResourceBySurvivorQuery.avg_resource('ammunition')).to eql 2.50 }
+    it { expect(Queries::AverageResourceBySurvivor.avg_resource('water')).to eql 2.50 }
+    it { expect(Queries::AverageResourceBySurvivor.avg_resource('food')).to eql 2.50 }
+    it { expect(Queries::AverageResourceBySurvivor.avg_resource('medication')).to eql 2.50 }
+    it { expect(Queries::AverageResourceBySurvivor.avg_resource('ammunition')).to eql 2.50 }
   end
 end
