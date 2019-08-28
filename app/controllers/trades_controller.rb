@@ -12,13 +12,13 @@ class TradesController < ApplicationController
       resources: requester_params[:inventory]
     }
 
-    resources = TradeService.new(offer, request)
+    exchange = Trade::Exchange.new(offer, request)
 
-    return render json: resources.errors, status: 403 if resources.errors.validation_error?
+    return render json: exchange.errors, status: 403 if exchange.errors.validation_error?
 
-    resources.trade
+    exchange.trade
 
-    render json: resources, status: :ok
+    render json: exchange, status: :ok
   end
 
   private

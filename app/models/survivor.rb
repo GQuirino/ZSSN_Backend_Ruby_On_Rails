@@ -19,6 +19,6 @@ class Survivor < ApplicationRecord
   end
 
   def initialize_points
-    self.points = InventoryService.generate_points(self.inventories)
+    self.points = Trade::PriceTable.generate_points(self.inventories)
   end
 end

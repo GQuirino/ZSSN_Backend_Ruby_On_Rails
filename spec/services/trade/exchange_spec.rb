@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe TradeService do
+RSpec.describe Trade::Exchange do
   let(:survivor_offer) { create(:survivor, flag_as_infected: 0, points: 30) }
   let(:survivor_request) { create(:survivor, flag_as_infected: 0, points: 30) }
 
@@ -21,7 +21,7 @@ RSpec.describe TradeService do
     subject do
       offer[:resources] = { ammunition: 4 }
       request[:resources] = { water: 1 }
-      TradeService.new(offer, request)
+      Trade::Exchange.new(offer, request)
     end
 
     it 'should not have errors' do
@@ -47,7 +47,7 @@ RSpec.describe TradeService do
         offer[:resources] = { ammunition: AMMUNITION }
         request[:resources] = { water: WATER }
 
-        trade = TradeService.new(offer, request).trade
+        trade = Trade::Exchange.new(offer, request).trade
         new_offer_ammunition = ammount_resource(trade[:from], 'ammunition')
         new_offer_water = ammount_resource(trade[:from], 'water')
         new_request_ammunition = ammount_resource(trade[:to], 'ammunition')

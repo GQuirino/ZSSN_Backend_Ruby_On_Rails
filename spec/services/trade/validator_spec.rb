@@ -1,11 +1,6 @@
 require 'rails_helper'
 
-class HelperTestClass
-  include TradeValidator
-end
-
-RSpec.describe TradeValidator do
-  let(:module_test) { HelperTestClass.new }
+RSpec.describe Trade::Validator do
   let(:survivor_offer) { create(:survivor, flag_as_infected: 0, points: 30) }
   let(:survivor_request) { create(:survivor, flag_as_infected: 0, points: 30) }
 
@@ -27,7 +22,7 @@ RSpec.describe TradeValidator do
       subject do
         offer[:resources] = { ammunition: 1 }
         request[:resources] = { water: 1 }
-        module_test.validate_trade(offer, request)
+        Trade::Validator.validate_trade(offer, request)
       end
 
       it 'return Invalid Trade Error' do
@@ -43,7 +38,7 @@ RSpec.describe TradeValidator do
       subject do
         offer[:resources] = { ammunition: 6 }
         request[:resources] = { medication: 3 }
-        module_test.validate_trade(offer, request)
+        Trade::Validator.validate_trade(offer, request)
       end
 
       it 'return Invalid Trade Error' do
@@ -56,7 +51,7 @@ RSpec.describe TradeValidator do
       subject do
         offer[:resources] = { medication: 3 }
         request[:resources] = { ammunition: 6 }
-        module_test.validate_trade(offer, request)
+        Trade::Validator.validate_trade(offer, request)
       end
 
       it 'return Invalid Trade Error' do
@@ -73,7 +68,7 @@ RSpec.describe TradeValidator do
         offer[:resources] = { ammunition: 4 }
         request[:resources] = { water: 1 }
 
-        module_test.validate_trade(offer, request)
+        Trade::Validator.validate_trade(offer, request)
       end
 
       it 'return Invalid Trade Error' do
@@ -90,7 +85,7 @@ RSpec.describe TradeValidator do
         offer[:resources] = { ammunition: 4 }
         request[:resources] = { water: 1 }
 
-        module_test.validate_trade(offer, request)
+        Trade::Validator.validate_trade(offer, request)
       end
 
       it 'return Invalid Trade Error' do
@@ -107,7 +102,7 @@ RSpec.describe TradeValidator do
         offer[:resources] = { ammunition: 8 }
         request[:resources] = { water: 3 }
 
-        module_test.validate_trade(offer, request)
+        Trade::Validator.validate_trade(offer, request)
       end
 
       it 'return Invalid Trade Error' do
