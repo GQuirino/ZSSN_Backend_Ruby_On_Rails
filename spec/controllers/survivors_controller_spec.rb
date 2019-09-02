@@ -52,7 +52,7 @@ RSpec.describe SurvivorsController, type: :controller do
   end
 
   describe 'POST #create' do
-    let(:new_time) { Time.local(2019, 10, 1, 10, 5, 0) } # 2019/10/01 10:05:00
+    let(:new_time) { Time.parse('2019-10-01T10:05:00.000Z').utc } # 2019/10/01 10:05:00
 
     def resource_created?(inventory, type)
       inventory.any? do |hash|
