@@ -30,4 +30,6 @@ module InventoryService
 
     resources.to_h.symbolize_keys
   end
+
+  module_function :generate_points
 end
