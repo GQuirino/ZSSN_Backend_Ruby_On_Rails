@@ -10,28 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_03_172804) do
+ActiveRecord::Schema.define(version: 2019_08_15_132457) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "inventories", force: :cascade do |t|
     t.bigint "survivor_id"
-    t.string "resource_type"
-    t.integer "resource_amount"
+    t.string "resource_type", null: false
+    t.integer "resource_amount", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["resource_type"], name: "index_inventories_on_resource_type"
     t.index ["survivor_id"], name: "index_inventories_on_survivor_id"
+    t.index ["survivor_id"], name: "newindex"
   end
 
   create_table "survivors", force: :cascade do |t|
-    t.string "name"
-    t.string "gender"
-    t.integer "age"
-    t.integer "flag_as_infected"
-    t.integer "points"
-    t.string "latitude"
-    t.string "longitude"
+    t.string "name", null: false
+    t.string "gender", null: false
+    t.integer "age", null: false
+    t.integer "flag_as_infected", default: 0, null: false
+    t.integer "points", null: false
+    t.string "latitude", null: false
+    t.string "longitude", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
