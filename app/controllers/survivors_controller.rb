@@ -19,9 +19,7 @@ class SurvivorsController < ApplicationController
 
   # POST /survivors
   def create
-    @survivor = Survivor.new(survivor_params)
-    @survivor.initialize_points
-    @survivor.initialize_infection
+    @survivor = SurvivorFactory.new(survivor_params)
 
     if @survivor.save
       render json: @survivor.to_json(methods: [:inventories]), status: :created
