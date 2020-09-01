@@ -21,12 +21,4 @@ class Survivor < ApplicationRecord
   def infected?
     self.flag_as_infected >= INFECTION_RATE
   end
-
-  def initialize_infection
-    self.flag_as_infected = 0
-  end
-
-  def initialize_points
-    self.points = InventoryService.generate_points(self.inventories)
-  end
 end

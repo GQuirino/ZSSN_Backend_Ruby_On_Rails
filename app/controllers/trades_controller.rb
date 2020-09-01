@@ -5,6 +5,11 @@ class TradesController < ApplicationController
   end
 
   def update
+    offer_params = { id_survivor: trade_params[:id_survivor_from],
+                     inventory: trade_params[:inventory_offer].permit! }
+    requester_params = { id_survivor: trade_params[:id_survivor_to],
+                         inventory: trade_params[:inventory_request].permit! }
+
     resp = TradeService.trade(offer_params, requester_params)
 
     render json: resp, status: resp[:status_code] || :ok
@@ -12,21 +17,12 @@ class TradesController < ApplicationController
 
   private
 
-  def find_survivor(id)
-    Survivor.find(id)
-  end
-
-  def offer_params
+  def trade_params
     {
-      id_survivor: params.require(:id_survivor_from),
-      inventory: params.require(:inventory_offer)
-    }
-  end
-
-  def requester_params
-    {
-      id_survivor: params.require(:id_survivor_to),
-      inventory: params.require(:inventory_request)
+      id_survivor_from: params.require(:id_survivor_from),
+      id_survivor_to: params.require(:id_survivor_to),
+      inventory_offer: params.require(:inventory_offer),
+      inventory_request: params.require(:inventory_request)
     }
   end
 end
