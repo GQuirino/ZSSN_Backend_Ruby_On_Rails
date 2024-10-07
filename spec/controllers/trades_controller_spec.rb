@@ -17,24 +17,6 @@ RSpec.describe TradesController, type: :controller do
       create(:inventory, :ammunition, resource_amount: 4, survivor: survivor3)
     end
 
-    it 'returns error not Found' do
-      id_from = '999'
-      put :update, params: {
-        id_survivor_from: id_from,
-        id_survivor_to: survivor2.id,
-        inventory_offer: { ammunition: 4 },
-        inventory_request: { water: 1 }
-      }
-
-      expect(response).to have_http_status(:not_found)
-
-      body = JSON.parse(response.body)
-      expect(body).not_to be_empty
-      expect(body.length).to eql 4
-      expect(body['details']).to eql 'Resource not found'
-      expect(body['source']).to eql "Couldn't find Survivor with 'id'=#{id_from}"
-    end
-
     it 'returns error survivor infected' do
       put :update, params: {
         id_survivor_from: survivor3.id,
@@ -46,10 +28,9 @@ RSpec.describe TradesController, type: :controller do
       expect(response).to have_http_status(403)
 
       body = JSON.parse(response.body)
+
       expect(body).not_to be_empty
-      expect(body.length).to eql 4
-      expect(body['details']).to eql 'Invalid Trade'
-      expect(body['source']['reason']).to eql "Survivor #{survivor3.id} is infected"
+      expect(body['validation_error']).to eql ["Survivor #{survivor3.id} is infected"]
     end
 
     it 'returns edited survivors inventories' do
@@ -64,7 +45,7 @@ RSpec.describe TradesController, type: :controller do
 
       body = JSON.parse(response.body)
       expect(body).not_to be_empty
-      expect(body.length).to eql 2
+      expect(body.length).to eql 3
     end
   end
 end

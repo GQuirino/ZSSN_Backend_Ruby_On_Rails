@@ -14,11 +14,11 @@ class Survivor < ApplicationRecord
             :longitude,
             presence: true
 
-  def increment_infection!
-    self.flag_as_infected += 1
+  def initialize_infection
+    self.flag_as_infected = 0
   end
 
-  def infected?
-    self.flag_as_infected >= INFECTION_RATE
+  def initialize_points
+    self.points = Trade::PriceTable.generate_points(self.inventories)
   end
 end

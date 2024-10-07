@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe InventoryService do
+RSpec.describe Trade::PriceTable do
   let(:survivor) { create(:survivor) }
   before do
     create(:inventory, :water, resource_amount: 1, survivor: survivor)
@@ -10,6 +10,7 @@ RSpec.describe InventoryService do
   end
 
   describe '.generate_points' do
-    it { expect(InventoryService.generate_points(survivor.inventories.to_a)).to eql 20 }
+    subject { Trade::PriceTable.generate_points(survivor.inventories) }
+    it { is_expected.to eql 20 }
   end
 end

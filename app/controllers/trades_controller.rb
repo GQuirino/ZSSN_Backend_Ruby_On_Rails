@@ -1,23 +1,34 @@
 class TradesController < ApplicationController
-  rescue_from ActiveRecord::RecordNotFound do |exception|
-    error = Errors.resource_not_found(exception)
-    render json: error, status: error[:status_code]
-  end
+  before_action :set_survivors, only: :update
 
   def update
-    offer_params = { id_survivor: trade_params[:id_survivor_from],
-                     inventory: trade_params[:inventory_offer].permit! }
-    requester_params = { id_survivor: trade_params[:id_survivor_to],
-                         inventory: trade_params[:inventory_request].permit! }
+    offer = {
+      survivor: @survivor_offer,
+      resources: offer_params[:inventory]
+    }
 
-    resp = TradeService.trade(offer_params, requester_params)
+    request = {
+      survivor: @survivor_request,
+      resources: requester_params[:inventory]
+    }
 
-    render json: resp, status: resp[:status_code] || :ok
+    exchange = Trade::Exchange.new(offer, request)
+
+    return render json: exchange.errors, status: 403 if exchange.errors.validation_error?
+
+    exchange.trade
+
+    render json: exchange, status: :ok
   end
 
   private
 
-  def trade_params
+  def set_survivors
+    @survivor_offer = Survivor.find(offer_params[:id_survivor])
+    @survivor_request = Survivor.find(requester_params[:id_survivor])
+  end
+
+  def offer_params
     {
       id_survivor_from: params.require(:id_survivor_from),
       id_survivor_to: params.require(:id_survivor_to),

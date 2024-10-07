@@ -29,18 +29,6 @@ RSpec.describe SurvivorsController, type: :controller do
       expect(body).not_to be_empty
       expect(body.length).to eql(11)
     end
-
-    it 'returns an error' do
-      id = '999999'
-      get :show, params: { id: id }
-      expect(response).to have_http_status(404)
-
-      body = JSON.parse(response.body)
-      expect(body).not_to be_empty
-      expect(body['status_code']).to eql(404)
-      expect(body['title']).to eql('NOT FOUND')
-      expect(body['source']).to eql("Couldn't find Survivor with 'id'=#{id}")
-    end
   end
 
   describe 'PUT #update' do
@@ -61,31 +49,11 @@ RSpec.describe SurvivorsController, type: :controller do
       expect(body['latitude']).to eql latitude
       expect(body['longitude']).to eql longitude
     end
-
-    it 'returns an error' do
-      latitude = '999.666'
-      longitude = '888.444'
-      id = '999999'
-
-      put :update, params: {
-        id: id,
-        survivor: {
-          latitude: latitude,
-          longitude: longitude
-        }
-      }
-
-      expect(response).to have_http_status(404)
-
-      body = JSON.parse(response.body)
-      expect(body).not_to be_empty
-      expect(body['status_code']).to eql(404)
-      expect(body['title']).to eql('NOT FOUND')
-      expect(body['source']).to eql("Couldn't find Survivor with 'id'=#{id}")
-    end
   end
 
   describe 'POST #create' do
+    let(:new_time) { Time.parse('2019-10-01T10:05:00.000Z').utc } # 2019/10/01 10:05:00
+
     def resource_created?(inventory, type)
       inventory.any? do |hash|
         hash['resource_type'] == type[:resource_type] &&
@@ -94,7 +62,7 @@ RSpec.describe SurvivorsController, type: :controller do
     end
 
     before do
-      Timecop.freeze(Time.local(2019, 10, 1, 10, 5, 0)) # 2019/10/01 13:05:00
+      Timecop.freeze(new_time)
     end
 
     after do
@@ -144,9 +112,10 @@ RSpec.describe SurvivorsController, type: :controller do
         'points' => 20,
         'latitude' => params[:latitude].to_s,
         'longitude' => params[:longitude].to_s,
-        'created_at' => '2019-10-01T13:05:00.000Z',
-        'updated_at' => '2019-10-01T13:05:00.000Z'
+        'created_at' => '2019-10-01T10:05:00.000Z',
+        'updated_at' => '2019-10-01T10:05:00.000Z'
       }
+
       body = JSON.parse(response.body)
       expect(body).not_to be_empty
       expect(body.length).to eql 11

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ReportService do
+RSpec.describe Report do
   let(:survivor) { create(:survivor, flag_as_infected: 0) }
   before do
     create(:inventory, :water, resource_amount: 1, survivor: survivor)
@@ -21,7 +21,7 @@ RSpec.describe ReportService do
         amunition: 4.0
       }
     }
-    it { expect(ReportService.generate_report_non_infected).to eql expected_return }
+    it { expect(Report.generate_report_non_infected).to eql expected_return }
   end
 
   describe '.generate_report_infected' do
@@ -30,10 +30,10 @@ RSpec.describe ReportService do
       percent: 50.0,
       points_lost: 30
     }
-    it { expect(ReportService.generate_report_infected).to eql expected_return }
+    it { expect(Report.generate_report_infected).to eql expected_return }
   end
 
   describe '.generate_percentage' do
-    it { expect(ReportService.generate_percentage(50, 100)).to eql(50.00) }
+    it { expect(Report.generate_percentage(50, 100)).to eql(50.00) }
   end
 end
