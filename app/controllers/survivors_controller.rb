@@ -1,11 +1,6 @@
 class SurvivorsController < ApplicationController
   before_action :set_survivor, only: %i[show update]
 
-  rescue_from ActiveRecord::RecordNotFound do |exception|
-    error = Errors.resource_not_found(exception)
-    render json: error, status: error[:status_code]
-  end
-
   # GET /survivors
   def index
     @survivors = Survivor.all
@@ -19,9 +14,7 @@ class SurvivorsController < ApplicationController
 
   # POST /survivors
   def create
-    @survivor = Survivor.new(survivor_params)
-    @survivor.initialize_points
-    @survivor.initialize_infection
+    @survivor = SurvivorFactory.new(survivor_params)
 
     if @survivor.save
       render json: @survivor.to_json(methods: [:inventories]), status: :created
@@ -32,14 +25,14 @@ class SurvivorsController < ApplicationController
 
   # PATCH/PUT /survivors/1
   def update
-    if @survivor.infected?
-      error = Errors.survivor_infected(@survivor.id)
-      return render json: error, status: error[:status_code]
-    end
-
     if @survivor.update(survivor_edit_params)
       render json: @survivor, status: :ok
     else
+      if @survivor.errors.key?('infected')
+        err = @survivor.errors.messages[:infected][0]
+        return render json: err, status: err[:status_code]
+      end
+
       render json: @survivor.errors.messages, status: :internal_error
     end
   end

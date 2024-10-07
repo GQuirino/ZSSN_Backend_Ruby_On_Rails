@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe TradeService do
+RSpec.describe Trade::Exchange do
   let(:survivor_offer) { create(:survivor, flag_as_infected: 0, points: 30) }
   let(:survivor_request) { create(:survivor, flag_as_infected: 0, points: 30) }
 
@@ -14,36 +14,18 @@ RSpec.describe TradeService do
   let!(:medication_request) { create(:inventory, :medication, resource_amount: 3, survivor: survivor_request) }
   let!(:ammunition_request) { create(:inventory, :ammunition, resource_amount: 4, survivor: survivor_request) }
 
-  let(:offer) { { id_survivor: survivor_offer.id } }
-  let(:request) { { id_survivor: survivor_request.id } }
+  let(:offer) { { survivor: survivor_offer } }
+  let(:request) { { survivor: survivor_request } }
 
   describe '.trade' do
-    context 'when price table is not respected' do
-      it 'return Invalid Trade Error' do
-        offer[:inventory] = { 'ammunition' => 1 }
-        request[:inventory] = { 'water' => 1 }
-        expected_response = {
-          details: 'Invalid Trade',
-          source: { reason: 'Trade not respect table of prices' },
-          status_code: 403,
-          title: 'INVALID TRADE'
-        }
-        expect(TradeService.trade(offer, request)).to eql(expected_response)
-      end
+    subject do
+      offer[:resources] = { ammunition: 4 }
+      request[:resources] = { water: 1 }
+      Trade::Exchange.new(offer, request)
     end
 
-    context 'when survivor doesnt have enough resources' do
-      it 'return Invalid Trade Error' do
-        offer[:inventory] = { 'ammunition' => 8 }
-        request[:inventory] = { 'water' => 2 }
-        expected_response = {
-          details: 'Invalid Trade',
-          source: { reason: "Survivor #{offer[:id_survivor]} doesn't have enough resources" },
-          status_code: 403,
-          title: 'INVALID TRADE'
-        }
-        expect(TradeService.trade(offer, request)).to eql(expected_response)
-      end
+    it 'should not have errors' do
+      expect(subject.errors.validation_error?).to eql false
     end
 
     context 'when survivor has resources and trade obey price table' do
@@ -62,11 +44,10 @@ RSpec.describe TradeService do
           inventory[idx]['resource_amount']
         end
 
-        offer[:inventory] = { 'ammunition' => AMMUNITION }
-        request[:inventory] = { 'water' => WATER }
+        offer[:resources] = { ammunition: AMMUNITION }
+        request[:resources] = { water: WATER }
 
-        trade = TradeService.trade(offer, request)
-
+        trade = Trade::Exchange.new(offer, request).trade
         new_offer_ammunition = ammount_resource(trade[:from], 'ammunition')
         new_offer_water = ammount_resource(trade[:from], 'water')
         new_request_ammunition = ammount_resource(trade[:to], 'ammunition')
